@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions={
     // secret:process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
-          // The name to display on the sign in form (e.g. "Sign in with...")
+          // The name to display n the sign in form (e.g. "Sign in with...")
           name: "Credentials",
           credentials: {
             username: { label: "Username", type: "text", placeholder: "jsmith" },
