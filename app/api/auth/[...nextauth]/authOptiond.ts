@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from "next-auth/providers/credentials"
 
+// console.log(process.env.NEXTAUTH_SECRET)
 export const authOptions: NextAuthOptions={
     session:{
         strategy:'jwt'
@@ -16,6 +17,7 @@ export const authOptions: NextAuthOptions={
           },
           async authorize(credentials, req) {
             console.log(credentials)
+            console.log(process.env.NEXTAUTH_SECRET)
             // Add logic here to look up the user from the credentials supplied
             const user = { id: "1", name: credentials?.username, email: "jsmith@example.com" }
       
