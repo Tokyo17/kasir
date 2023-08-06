@@ -5,7 +5,7 @@ export const authOptions: NextAuthOptions={
     session:{
         strategy:'jwt'
     },
-    // secret:process.env.NEXTAUTH_SECRET,
+    secret:process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
           // The name to display n the sign in form (e.g. "Sign in with...")
