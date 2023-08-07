@@ -18,7 +18,7 @@ import { useEffect } from "react"
            )
            console.log(statusLogin?.ok)
            if(statusLogin?.ok){
-                route.push("/")
+                route.push("/dashboard")
            }
         }catch{
 
@@ -30,7 +30,7 @@ import { useEffect } from "react"
 
     useEffect(()=>{
         if(session){
-            route.push("/")
+            route.push("/dashboard")
         }
     },[session])
 
