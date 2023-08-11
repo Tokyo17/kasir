@@ -38,7 +38,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const audio = useRef(typeof Audio !== "undefined" ? new Audio("") : undefined);
 
   useEffect(()=>{
-    // location.reload()
+
       audio.current?.pause()
       audio.current=new Audio(music?.url||'')
       if ("mediaSession" in navigator) {
