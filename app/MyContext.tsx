@@ -49,57 +49,24 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
 
 
-  if ("mediaSession" in window.navigator) {
+  if ("mediaSession" in navigator) {
     try{
-      window.navigator.mediaSession.metadata = new MediaMetadata({
+      navigator.mediaSession.metadata = new MediaMetadata({
         title: music?.name,
         artist:String( music?.index)+music?.name,
         album: "The Ultimate Collection (Remastered)",
       });
-      window.navigator.mediaSession.metadata.title="sadhsadb"
     }catch(err){
       console.log(err)
     }
 
 
-    window.navigator.mediaSession.setActionHandler("previoustrack", () => {
-      // alert(JSON.stringify(dataMusic))
-      // console.log(music.index,dataMusic.length-1)
-      if(music.index>=1){
-        setMusic(dataMusic[music.index-1])
-      }
-      // setMusic()
-    });
 
-    window.navigator.mediaSession.setActionHandler("nexttrack", () => {
-      if(music.index<=dataMusic.length-2){
-        // console.log(music.index,dataMusic.length-1)
-        setMusic(dataMusic[music.index+1])
-      }
-    });
 }else{
   console.log("media session not work")
 }
 
-if ('setPositionState' in window.navigator.mediaSession) {
-  if(audio.current){
-    audio.current.onloadedmetadata=()=>{
 
-      // if(audio.current.duration){
-      //   const interval = setInterval(() => {
-          // console.log(audio.current.currentTime)
-          window.navigator.mediaSession.setPositionState({
-            duration: 0,
-            position: 0,
-          }); 
-      //   }, 1000); // Interval of 1 second
-      //   return () => {
-      //     clearInterval(interval);
-      //   };
-      // }     
-    }
-  }
-}
 
 
 
