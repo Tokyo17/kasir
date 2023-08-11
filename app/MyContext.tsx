@@ -2,7 +2,7 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { createContext, useContext } from 'react';
-import { json } from 'stream/consumers';
+import dynamic from 'next/dynamic'
 
 // Definisikan tipe data untuk context
 export type MyContextType = {
