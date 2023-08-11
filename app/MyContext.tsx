@@ -49,7 +49,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
 
 
-//   if ("mediaSession" in navigator) {
+  if ("mediaSession" in navigator) {
 //     try{
 //       navigator.mediaSession.metadata = new MediaMetadata({
 //         title: music?.name,
@@ -77,9 +77,9 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 //         setMusic(dataMusic[music.index+1])
 //       }
 //     });
-// }else{
-//   console.log("media session not work")
-// }
+}else{
+  console.log("media session not work")
+}
 
 // if ('setPositionState' in navigator.mediaSession) {
 //   if(audio.current){
