@@ -47,15 +47,15 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
       // console.log(navigator.mediaSession.metadata)
   },[music])
 
-  navigator.mediaSession.metadata = new MediaMetadata({
-    title: music?.name,
-    artist:String( music?.index)+music?.name,
-    album: "The Ultimate Collection (Remastered)",
-  });
+
 
   if ("mediaSession" in navigator) {
     try{
-
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: music?.name,
+        artist:String( music?.index)+music?.name,
+        album: "The Ultimate Collection (Remastered)",
+      });
       navigator.mediaSession.metadata.title="sadhsadb"
     }catch(err){
       console.log(err)
