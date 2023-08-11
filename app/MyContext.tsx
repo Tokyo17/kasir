@@ -42,38 +42,58 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
       audio.current?.pause()
       audio.current=new Audio(music?.url||'')
       if ("mediaSession" in navigator) {
-        //     try{
-        //       navigator.mediaSession.metadata = new MediaMetadata({
-        //         title: music?.name,
-        //         artist:String( music?.index)+music?.name,
-        //         album: "The Ultimate Collection (Remastered)",
-        //       });
-        //       navigator.mediaSession.metadata.title="sadhsadb"
-        //     }catch(err){
-        //       console.log(err)
-        //     }
+            try{
+              navigator.mediaSession.metadata = new MediaMetadata({
+                title: music?.name,
+                artist:String( music?.index)+music?.name,
+                album: "The Ultimate Collection (Remastered)",
+              });
+              navigator.mediaSession.metadata.title="sadhsadb"
+            }catch(err){
+              console.log(err)
+            }
         
         
-        //     navigator.mediaSession.setActionHandler("previoustrack", () => {
-        //       // alert(JSON.stringify(dataMusic))
-        //       // console.log(music.index,dataMusic.length-1)
-        //       if(music.index>=1){
-        //         setMusic(dataMusic[music.index-1])
-        //       }
-        //       // setMusic()
-        //     });
+            navigator.mediaSession.setActionHandler("previoustrack", () => {
+              // alert(JSON.stringify(dataMusic))
+              // console.log(music.index,dataMusic.length-1)
+              if(music.index>=1){
+                setMusic(dataMusic[music.index-1])
+              }
+              // setMusic()
+            });
         
-        //     navigator.mediaSession.setActionHandler("nexttrack", () => {
-        //       if(music.index<=dataMusic.length-2){
-        //         // console.log(music.index,dataMusic.length-1)
-        //         setMusic(dataMusic[music.index+1])
-        //       }
-        //     });
+            navigator.mediaSession.setActionHandler("nexttrack", () => {
+              if(music.index<=dataMusic.length-2){
+                // console.log(music.index,dataMusic.length-1)
+                setMusic(dataMusic[music.index+1])
+              }
+            });
         }else{
           console.log("media session not work")
         }
         
+        
       audio.current.play()
+      if ('setPositionState' in navigator.mediaSession) {
+        if(audio.current){
+          audio.current.onloadedmetadata=()=>{
+      
+            // if(audio.current.duration){
+            //   const interval = setInterval(() => {
+                // console.log(audio.current.currentTime)
+                navigator.mediaSession.setPositionState({
+                  duration: 0,
+                  position: 0,
+                }); 
+            //   }, 1000); // Interval of 1 second
+            //   return () => {
+            //     clearInterval(interval);
+            //   };
+            // }     
+          }
+        }
+      }
       setIsPlaying(true)
       // console.log(navigator.mediaSession.metadata)
   },[music])
@@ -81,25 +101,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
 
 
-// if ('setPositionState' in navigator.mediaSession) {
-//   if(audio.current){
-//     audio.current.onloadedmetadata=()=>{
 
-//       // if(audio.current.duration){
-//       //   const interval = setInterval(() => {
-//           // console.log(audio.current.currentTime)
-//           navigator.mediaSession.setPositionState({
-//             duration: 0,
-//             position: 0,
-//           }); 
-//       //   }, 1000); // Interval of 1 second
-//       //   return () => {
-//       //     clearInterval(interval);
-//       //   };
-//       // }     
-//     }
-//   }
-// }
 
 
 
