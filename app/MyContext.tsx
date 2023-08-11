@@ -35,11 +35,11 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
   const {data:session,status}=useSession()
 
-  const audio = useRef(new Audio(''));
+  const audio = useRef(typeof Audio !== "undefined" ? new Audio("") : undefined);
 
   useEffect(()=>{
     // location.reload()
-      audio.current.pause()
+      audio.current?.pause()
       audio.current=new Audio(music?.url||'')
 
       audio.current.play()
@@ -82,6 +82,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 }
 
 if ('setPositionState' in navigator.mediaSession) {
+  if(audio.current){
     audio.current.onloadedmetadata=()=>{
 
       // if(audio.current.duration){
@@ -97,6 +98,7 @@ if ('setPositionState' in navigator.mediaSession) {
       //   };
       // }     
     }
+  }
 }
 
 
@@ -104,7 +106,9 @@ if ('setPositionState' in navigator.mediaSession) {
 
   useEffect(()=>{
     if(!session&&status == "unauthenticated"){
-      audio.current.srcObject=null
+      if(audio.current){
+        audio.current.srcObject=null
+      }
     }
   },[status])
 
