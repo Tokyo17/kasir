@@ -49,7 +49,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
 
 
-  if ("mediaSession" in navigator) {
+  if ("mediaSession" in global.navigator) {
 //     try{
 //       navigator.mediaSession.metadata = new MediaMetadata({
 //         title: music?.name,
