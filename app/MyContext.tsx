@@ -49,7 +49,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
 
 
-  if ("mediaSession" in navigator) {
+  if ("mediaSession" in window.navigator) {
     try{
       window.navigator.mediaSession.metadata = new MediaMetadata({
         title: music?.name,
@@ -62,7 +62,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     }
 
 
-    navigator.mediaSession.setActionHandler("previoustrack", () => {
+    window.navigator.mediaSession.setActionHandler("previoustrack", () => {
       // alert(JSON.stringify(dataMusic))
       // console.log(music.index,dataMusic.length-1)
       if(music.index>=1){
@@ -71,7 +71,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
       // setMusic()
     });
 
-    navigator.mediaSession.setActionHandler("nexttrack", () => {
+    window.navigator.mediaSession.setActionHandler("nexttrack", () => {
       if(music.index<=dataMusic.length-2){
         // console.log(music.index,dataMusic.length-1)
         setMusic(dataMusic[music.index+1])
@@ -81,14 +81,14 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   console.log("media session not work")
 }
 
-if ('setPositionState' in navigator.mediaSession) {
+if ('setPositionState' in window.navigator.mediaSession) {
   if(audio.current){
     audio.current.onloadedmetadata=()=>{
 
       // if(audio.current.duration){
       //   const interval = setInterval(() => {
           // console.log(audio.current.currentTime)
-          navigator.mediaSession.setPositionState({
+          window.navigator.mediaSession.setPositionState({
             duration: 0,
             position: 0,
           }); 
