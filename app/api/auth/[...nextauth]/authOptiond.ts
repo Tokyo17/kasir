@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions={
             console.log("USERRRR : ",datajson)
             const user = { id: datajson.user.id, name: datajson.user.name, email: "jsmith@example.com"}
 
-            if (user) {
+            if (datajson.user) {
               // Any object returned will be saved in `user` property of the JWT
               return user
             } else {

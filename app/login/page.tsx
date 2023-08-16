@@ -19,8 +19,8 @@ import { useEffect, useState } from "react"
                 redirect:false
             }
            )
-           console.log(statusLogin?.ok)
-           if(statusLogin?.ok){
+           console.log(statusLogin)
+           if(!statusLogin?.error){
                 route.push("/dashboard")
            }}
         }catch{

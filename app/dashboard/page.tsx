@@ -23,16 +23,20 @@ export default function Dashboard(){
     },[status])
 
 
+    const  updateHandler=(id:number)=>{
+        route.push(`/dashboard/${id}`)
+      }
+
     const getData=async()=>{
-       const data= await fetch("/api")
+       const data= await fetch("/api/playlist")
        const json=await data.json()
-        const newJson = json?.data?.map((item: { index:number,img_name: string, url: string },index:number) => ({
-        index:index,
-        name: item.img_name,
-        url: item.url
-      }));
-      console.log(newJson)
-       setDataMusic(newJson)
+    //     const newJson = json?.data?.map((item: { index:number,img_name: string, url: string },index:number) => ({
+    //     index:index,
+    //     name: item.img_name,
+    //     url: item.url
+    //   }));
+      console.log(json)
+       setDataMusic(json)
     }
 
     
@@ -40,7 +44,7 @@ export default function Dashboard(){
    
 
     useEffect(()=>{
-        // getData()
+        getData()
     },[])
  
 
@@ -53,8 +57,12 @@ export default function Dashboard(){
         <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div>
 
-        {dataMusic?.map((item:{index:number,name:string,url:string},index:number)=>{
+        {/* {dataMusic?.map((item:{index:number,name:string,url:string},index:number)=>{
              return <p onClick={()=>{setMusic({index:index,url:item.url,name:item.name})}} key={index}>{item.name}</p>
+
+        })} */}
+        {dataMusic?.playlists?.map((item:{id:number,name:string},index:number)=>{
+             return <p  key={index} onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
 
         })}
         {/* <button onClick={()=>{audio.current.play()}}>Play</button> */}
