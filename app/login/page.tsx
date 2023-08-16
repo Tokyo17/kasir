@@ -1,17 +1,20 @@
 "use client"
 import { useRouter } from "next/navigation"
 import { signIn, useSession } from "next-auth/react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
  export default function Login(){
     
+
+    const [username,setUsername]=useState('')
     const route=useRouter()
     const {data:session}=useSession()
     const login =async ()=>{
         
         try{
+            if(username){
           const statusLogin=await  signIn("credentials",
-            { username: "jsmith", 
+            { username: username, 
                 password: "1234",
                 redirect:false
             }
@@ -19,7 +22,7 @@ import { useEffect } from "react"
            console.log(statusLogin?.ok)
            if(statusLogin?.ok){
                 route.push("/dashboard")
-           }
+           }}
         }catch{
 
         }finally{
@@ -38,6 +41,7 @@ import { useEffect } from "react"
         <>
         <p>{JSON.stringify(session)}</p>
         <div >Login Page</div>
+        <input type="text" onChange={(e)=>setUsername(e.target.value)} value={username}/>
         <button onClick={login}>Login</button>
         </>
     )
