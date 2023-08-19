@@ -14,6 +14,7 @@ export default function Dashboard(){
     const route=useRouter()
     const {data:session,status}=useSession()
     const{music,setMusic,setDataMusic,dataMusic}=useMyContext()
+    const[name,setName]=useState('')
 
 
     useEffect(()=>{
@@ -40,9 +41,29 @@ export default function Dashboard(){
     }
 
     
-    // const audio=new Audio(music||'')
-   
+    const addPlaylist=async()=>{
 
+        if(name){
+            await fetch("/api/playlist",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    name:name
+                })
+            }).then(res=>{
+                getData()
+                setName('')
+                console.log(res)
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+    }
+
+
+ 
     useEffect(()=>{
         getData()
     },[])
@@ -51,21 +72,19 @@ export default function Dashboard(){
     return(
         <div>
             Dashboard
-            {/* {json} */}
-            <Link href="/">landing</Link>
+           
+            <Link href="/">landing2</Link>
 
         <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div>
-
-        {/* {dataMusic?.map((item:{index:number,name:string,url:string},index:number)=>{
-             return <p onClick={()=>{setMusic({index:index,url:item.url,name:item.name})}} key={index}>{item.name}</p>
-
-        })} */}
+        <p>ADD Playlist</p>
+        <input onChange={(e)=>setName(e.target.value) } value={name}/>
+        <button onClick={addPlaylist}>ADD</button>
         {dataMusic?.playlists?.map((item:{id:number,name:string},index:number)=>{
              return <p  key={index} onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
 
         })}
-        {/* <button onClick={()=>{audio.current.play()}}>Play</button> */}
+        
         </div>
         
     )

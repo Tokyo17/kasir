@@ -16,3 +16,16 @@ export const GET =async(req:NextRequest)=>{
     })
     return NextResponse.json({playlists})
 }
+
+export const POST=async(req:NextRequest)=>{
+    const session=await getServerSession(authOptions)
+    const {name}=await req.json()
+    console.log(name,session?.user.id)
+    const playlists=await prisma.playlists.create({
+        data:{
+            name:name,
+            userId:Number(session?.user.id)
+        }
+    })
+    return NextResponse.json({status:"post success"})
+}   

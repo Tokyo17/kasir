@@ -10,10 +10,10 @@ const prisma=new PrismaClient()
 export const GET =async(req:NextRequest)=>{
     const session=await getServerSession(authOptions)
     console.log(session)
-    const images=await prisma.playlists.findMany({
+    const songs=await prisma.songs.findMany({
         orderBy:{id:"desc"}
     })
-    return NextResponse.json({data:images})
+    return NextResponse.json({songs})
 }
 
 // export const POST=async(req:NextRequest)=>{

@@ -34,7 +34,9 @@ export default function Update({params}:{params:{id:string}}){
 
             {
                 song?.map((item:{id:number,title:string},index:number)=>{
-                   return <p>{item.title}</p>
+                return  <p key={index}>
+                            {item.title}
+                        </p>
                 })
             }
         </div>
