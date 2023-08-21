@@ -18,14 +18,21 @@ export default function Home() {
   const[showIndex,setShowIndex]=useState<number|null>(null)
   const dotRef = useRef<HTMLDivElement>(null);
 
+  interface LikedEntry {
+    userId: number;
+    songId: number;
+  }
 
   const getData=async()=>{
 
     const data= await fetch("/api")
     const json=await data.json()
+
+    // console.log(outputJSON)
     console.log(json)
     setDataMusic(json)
  }
+
 
   useEffect(()=>{
     getData()
@@ -46,12 +53,14 @@ const getDataPlaylist=async(songId:number)=>{
   // setDataPlaylistLoad(true)
   // setDataPlaylistOpen(true)
   try{
-    const data= await fetch("/api/playlist")
+    const data= await fetch(`/api/playlist?songid=${songId}`)
     const json=await data.json()
             const j = json?.playlists?.reduce((obj:any, item:any) => {
-              obj[item.id] = item.name;
+              if(!item.listed){
+              obj[item.id] = item.name;}
               return obj;
           }, {});
+  console.log(json)
   console.log(j)
     setDataPlaylist(j)
     showNavPlaylist(j,songId)
@@ -65,7 +74,6 @@ const getDataPlaylist=async(songId:number)=>{
 
 }
 const showNavPlaylist=async(value:any,songId:number)=>{
-
 
   Swal.fire({
     title: 'Select your playlist',
@@ -167,6 +175,55 @@ const addPlaylist=async(name:string,songId:number)=>{
   }
 }
 
+const likeHandler=async(songId:number)=>{
+
+    Swal.showLoading()
+      await fetch("/api/likesong",{
+          method:"POST",
+          headers:{
+              "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+              songId:songId
+          })
+      }).then(res=>{
+          Swal.fire({
+            title:'Success!',
+            icon:'success',
+            timer: 600,
+            showConfirmButton:false
+          })
+          // getDataPlaylist(songId)
+          getData()
+      }).catch(err=>{
+          console.log(err)
+      })
+}
+
+const unlikeHandler=async(songId:number)=>{
+
+  Swal.showLoading()
+    await fetch("/api/likesong",{
+        method:"DELETE",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            songId:songId
+        })
+    }).then(res=>{
+        Swal.fire({
+          title:'Success!',
+          icon:'success',
+          timer: 600,
+          showConfirmButton:false
+        })
+        // getDataPlaylist(songId)
+        getData()
+    }).catch(err=>{
+        console.log(err)
+    })
+}
 // useEffect(()=>{
 //   dataPlaylist&&
 
@@ -181,13 +238,13 @@ const addPlaylist=async(name:string,songId:number)=>{
         <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div>
 
-        {dataMusic?.songs?.map((item:{id:number,title:string},index:number)=>{
+        {dataMusic?.songs?.map((item:{id:number,title:string,liked:boolean},index:number)=>{
             return <div  onClick={removeNavSong} className='flex justify-between border border-indigo-600 h-9' key={index}>
                        <p >
                             {item.title}
                         </p>
                         <div className='song-action'>
-                          <button>Like </button>
+                          <button onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}>{item.liked?'Liked':'Like'}</button>
                           <button onClick={()=>getDataPlaylist(item.id)}>Add Playlist</button>
                         </div>
                         {/* <div ref={dotRef} onClick={()=>navSongHandler(index)} className='cursor-pointer'>...</div> */}

@@ -9,10 +9,22 @@ const prisma=new PrismaClient()
 
 export const GET =async(req:NextRequest)=>{
     const session=await getServerSession(authOptions)
-    console.log(session)
-    const songs=await prisma.songs.findMany({
+    // console.log(session)
+    const result=await prisma.songs.findMany({
+        include:{
+            likeds:true
+        },
         orderBy:{id:"desc"}
     })
+
+    const songs =result.map((song:{id:number,title:string,url:string,likeds:{userId: number,songId: number}[]}) => (
+          {
+          "id": song.id,
+          "title": song.title,
+          "url": song.url,
+          "liked": song.likeds.some(likedEntry => likedEntry.userId === session?.user?.id) // Change userId to the desired user's ID
+        }))
+
     return NextResponse.json({songs})
 }
 

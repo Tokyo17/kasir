@@ -8,19 +8,39 @@ const prisma=new PrismaClient()
 
 export const GET =async(req:NextRequest)=>{
     const session=await getServerSession(authOptions)
-    const playlists=await prisma.playlists.findMany({
+    const url=new URL(req.url).searchParams
+    const songId = Number(url.get('songid'))
+    console.log("songId : ",songId)
+
+    const result=await prisma.playlists.findMany({
         where:{
             userId:Number(session?.user.id)
+        },select:{
+            name:true,
+            id:true,
+            songs:{
+                select:{
+                    songId:true
+                }
+            },
+
         },
         orderBy:{id:"desc"}
     })
+    const playlists=result?.map((item:{id:number,name:string,songs:{songId: number}[]})=>(
+        {
+            "id":item.id,
+            "name":item.name,
+            "listed":item.songs.some(item=>item.songId==songId)
+        }
+    ))
     return NextResponse.json({playlists})
 }
 
 export const POST=async(req:NextRequest)=>{
     const session=await getServerSession(authOptions)
     const {name}=await req.json()
-    console.log(name,session?.user.id)
+    // console.log(name,session?.user.id)
     const playlists=await prisma.playlists.create({
         data:{
             name:name,
