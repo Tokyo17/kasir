@@ -49,3 +49,14 @@ export const POST=async(req:NextRequest)=>{
     })
     return NextResponse.json({status:"post success"})
 }   
+
+export const DELETE=async(req:NextRequest)=>{
+    const url=new URL(req.url).searchParams
+    const id = Number(url.get('id'))
+    await prisma.playlists.delete({
+        where:{
+            id:id
+        }
+    })
+    return NextResponse.json({status:"delete success"})
+}

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { DOMAttributes, FormEvent, FormEventHandler, useEffect, useRef, useState } from "react"
 import { useMyContext } from "../MyContext"
 import Link from "next/link"
+import Swal from "sweetalert2"
 
 export default function Dashboard(){
 
@@ -62,12 +63,46 @@ export default function Dashboard(){
         }
     }
 
+ 
+
+
+    const deletePlaylist=async(id:number)=>{
+        Swal.showLoading()
+            await fetch(`/api/playlist?id=${id}`,{
+                method:"DELETE",
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            }).then(res=>{
+                if(res.ok){
+                    getData()
+                    Swal.fire({
+                        title:'Success!',
+                        icon:'success',
+                        timer: 1000,
+                        showConfirmButton:false
+                      })
+                }else{
+                    Swal.fire({
+                        title:'Error!',
+                        icon:'error',
+                        timer: 1000,
+                        showConfirmButton:false
+                      })
+                }
+                console.log(res)
+            }).catch(err=>{
+                console.log(err)
+            })
+        
+    }
 
  
     useEffect(()=>{
         getData()
     },[])
  
+
 
     return(
         <div>
@@ -77,11 +112,18 @@ export default function Dashboard(){
 
         <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div>
+        <div onClick={()=>{route.push('/like')}}>List song like</div>
         <p>ADD Playlist</p>
         <input onChange={(e)=>setName(e.target.value) } value={name}/>
         <button onClick={addPlaylist}>ADD</button>
         {dataMusic?.playlists?.map((item:{id:number,name:string},index:number)=>{
-             return <p  key={index} onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
+             return <div key={index} className='flex justify-between border border-indigo-600 h-9'>
+                     <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
+                     <div className='song-action'>
+                          <button onClick={()=>{deletePlaylist(item.id)}} >Delete</button>
+                          <button >Rename</button>
+                    </div>
+             </div>
 
         })}
         
