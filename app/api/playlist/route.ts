@@ -60,3 +60,16 @@ export const DELETE=async(req:NextRequest)=>{
     })
     return NextResponse.json({status:"delete success"})
 }
+
+export const PUT=async(req:NextRequest)=>{
+    const {id,name}=await req.json()
+    await prisma.playlists.update({
+        where:{
+            id:id
+        },
+        data:{
+            name:name
+        }
+    })
+    return NextResponse.json({status:"update success"})
+}

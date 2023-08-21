@@ -97,6 +97,74 @@ export default function Dashboard(){
         
     }
 
+    const renamePlaylistApi=async(id:number,name:string)=>{
+       
+            await fetch(`/api/playlist`,{
+                method:"PUT",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    id:id,
+                    name:name
+                })
+            }).then(res=>{
+                if(res.ok){
+                    getData()
+                    Swal.fire({
+                        title:'Success!',
+                        icon:'success',
+                        timer: 1000,
+                        showConfirmButton:false
+                      })
+                }else{
+                    Swal.fire({
+                        title:'Error!',
+                        icon:'error',
+                        timer: 1000,
+                        showConfirmButton:false
+                      })
+                }
+                console.log(res)
+            }).catch(err=>{
+                console.log(err)
+            })
+        
+    }
+
+    const renamePlaylist=async(id:number,name:string)=>{
+        let inputValue=name
+
+        const { value: newName } = await  Swal.fire({
+          title: 'Enter your new name playlist',
+          input: 'text',
+          inputValue: inputValue,
+          showCancelButton: true,
+          inputValidator: (value) => {
+            if (!value) {
+              return 'You need to write something!'
+            }else{
+
+            }
+          }
+        })
+        if (newName) {
+                            Swal.fire({
+                    title: "Updateing name playlist",
+                    html: 'please waiting for a seconds.',
+                    didOpen:()=>{
+                        Swal.showLoading()
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false  
+                })
+                
+                renamePlaylistApi(id,newName)
+            
+          }
+    }
+
  
     useEffect(()=>{
         getData()
@@ -121,7 +189,7 @@ export default function Dashboard(){
                      <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
                      <div className='song-action'>
                           <button onClick={()=>{deletePlaylist(item.id)}} >Delete</button>
-                          <button >Rename</button>
+                          <button onClick={()=>{renamePlaylist(item.id,item.name)}}>Rename</button>
                     </div>
              </div>
 
