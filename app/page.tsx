@@ -241,14 +241,14 @@ const unlikeHandler=async(songId:number)=>{
         {dataMusic?.songs?.map((item:{id:number,title:string,liked:boolean},index:number)=>{
             return <div  onClick={removeNavSong} className='list-song' key={index}>
                         <div className='song-number'>{index}</div>
-                        <div className='play-icon'><IoPlayOutline size='30px'/></div>
+                        <div className='cursor-pointer play-icon'><IoPlayOutline size='30px'/></div>
                        <p className='title-song' >
                             {item.title}
                         </p>
-                        <div>2:30</div>
+                        <div className='song-duration'>2:30</div>
                         <div className='song-action'>
-                          <div className='like-button'>{item.liked?<IoHeartSharp size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>:<IoHeartOutline size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>}</div>
-                          <div className='playlist-button'> <IoAddCircleOutline size="30px" onClick={()=>getDataPlaylist(item.id)}/> </div>
+                          <div className='cursor-pointer like-button'>{item.liked?<IoHeartSharp size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>:<IoHeartOutline size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>}</div>
+                          <div className='cursor-pointer playlist-button'> <IoAddCircleOutline size="30px" onClick={()=>getDataPlaylist(item.id)}/> </div>
                         </div>
                   </div>
         })}

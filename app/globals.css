@@ -9,35 +9,45 @@ body{
 .list-song{
   display: flex;
   justify-content: space-between;
-  height: 40px;
+  height: 50px;
   margin: 0px 20px;
 }
 .song-number{
   width: 40px;
   display: flex;
   align-items: center;
-  border: 1px solid;
+  /* border: 1px solid; */
+  font-size: 20px;
 }
 .play-icon{
-  border: 1px solid;
+  /* border: 1px solid; */
   width: 41px;
   display: flex;
-  justify-content: start;
   align-items: center;
 }
 
 .title-song{
-  border: 1px solid;
+  /* border: 1px solid; */
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   flex: 4;
+  font-weight: 500;
+  font-size: 20px;
+}
+.song-duration{
+  /* border: 1px solid; */
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
 }
 .song-action{
-  border: 1px solid;
-  width: 70px;
+  /* border: 1px solid; */
+  width: 65px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .nav-song{
