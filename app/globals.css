@@ -2,18 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  background-color: black;
+  color: white;
+}
+.list-song{
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  margin: 0px 20px;
+}
+.song-number{
+  width: 40px;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+}
+.play-icon{
+  border: 1px solid;
+  width: 41px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.title-song{
+  border: 1px solid;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  flex: 4;
+}
+.song-action{
+  border: 1px solid;
+  width: 70px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .nav-song{
   position: absolute;
   /* z-index: 9px; */
   background-color: salmon;
 }
 
-.song-action{
-    border: 1px solid;
-    width: 150px;
-    display: flex;
-    justify-content: space-around;
+
+
+.react-icons {
+  width: 100px;
+  height: 100px;
 }
-/* #swal-input1{
-  border: 3px solid salmon;
-} */

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
+import { IoPlayOutline,IoHeartOutline,IoHeartSharp,IoAddCircleOutline } from 'react-icons/io5';
 
 export default function Home() {
 
@@ -26,7 +27,7 @@ export default function Home() {
   const getData=async()=>{
 
     const data= await fetch("/api")
-    const json=await data.json()
+    const json=await data?.json()
 
     // console.log(outputJSON)
     console.log(json)
@@ -98,9 +99,9 @@ const showNavPlaylist=async(value:any,songId:number)=>{
     let inputValue
       if(result.isDenied){
         Swal.fire({
-          title: 'Enter your IP address',
+          title: 'Enter your name playlist',
           input: 'text',
-          inputLabel: 'Your IP address',
+          inputLabel: 'Your playlist',
           inputValue: inputValue,
           showCancelButton: true,
           inputValidator: (value) => {
@@ -237,22 +238,18 @@ const unlikeHandler=async(songId:number)=>{
         <Link href="/dashboard">dashboard</Link>
         <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div>
-
         {dataMusic?.songs?.map((item:{id:number,title:string,liked:boolean},index:number)=>{
-            return <div  onClick={removeNavSong} className='flex justify-between border border-indigo-600 h-9' key={index}>
-                       <p >
+            return <div  onClick={removeNavSong} className='list-song' key={index}>
+                        <div className='song-number'>{index}</div>
+                        <div className='play-icon'><IoPlayOutline size='30px'/></div>
+                       <p className='title-song' >
                             {item.title}
                         </p>
+                        <div>2:30</div>
                         <div className='song-action'>
-                          <button onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}>{item.liked?'Liked':'Like'}</button>
-                          <button onClick={()=>getDataPlaylist(item.id)}>Add Playlist</button>
+                          <div className='like-button'>{item.liked?<IoHeartSharp size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>:<IoHeartOutline size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>}</div>
+                          <div className='playlist-button'> <IoAddCircleOutline size="30px" onClick={()=>getDataPlaylist(item.id)}/> </div>
                         </div>
-                        {/* <div ref={dotRef} onClick={()=>navSongHandler(index)} className='cursor-pointer'>...</div> */}
-                        {/* {showIndex==index&&<div className='nav-song'>
-                          <p>opsi 1</p>
-                          <p>opsi 2</p>
-                        </div>} */}
-
                   </div>
         })}
     </div>
