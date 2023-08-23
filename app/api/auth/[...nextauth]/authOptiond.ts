@@ -16,10 +16,13 @@ export const authOptions: NextAuthOptions={
         }
         return token
      },
-     async session({session, token}) {
-      session.id = token.id;
-      return session;
-  }
+     async session({ session, token, user }) {
+      // Send properties to the client, like an access_token and user id from a provider.
+      if(  session.user){
+      session.user.id = String(token.id)
+      }
+      return session
+    }
     },
     providers: [
         CredentialsProvider({

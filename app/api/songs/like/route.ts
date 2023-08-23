@@ -14,7 +14,7 @@ export const GET =async(req:NextRequest)=>{
         where:{
             likeds:{
                some:{
-                userId:session?.user?.id
+                userId:Number(session?.user?.id)
                }
             }
         }

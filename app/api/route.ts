@@ -9,7 +9,7 @@ const prisma=new PrismaClient()
 
 export const GET =async(req:NextRequest)=>{
     const session=await getServerSession(authOptions)
-    // console.log(session)
+// console.log(session)
     const result=await prisma.songs.findMany({
         include:{
             likeds:true
@@ -22,7 +22,7 @@ export const GET =async(req:NextRequest)=>{
           "id": song.id,
           "title": song.title,
           "url": song.url,
-          "liked": song.likeds.some(likedEntry => likedEntry.userId === session?.user?.id) // Change userId to the desired user's ID
+          "liked": song.likeds.some(likedEntry => likedEntry.userId === Number(session?.user?.id)) // Change userId to the desired user's ID
         }))
 
     return NextResponse.json({songs})

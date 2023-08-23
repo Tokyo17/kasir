@@ -14,7 +14,7 @@ export const GET =async(req:NextRequest)=>{
 
     const result=await prisma.playlists.findMany({
         where:{
-            userId:Number(session?.user.id)
+            userId:Number(session?.user?.id)
         },select:{
             name:true,
             id:true,
@@ -44,7 +44,7 @@ export const POST=async(req:NextRequest)=>{
     const playlists=await prisma.playlists.create({
         data:{
             name:name,
-            userId:Number(session?.user.id)
+            userId:Number(session?.user?.id)
         }
     })
     return NextResponse.json({status:"post success"})

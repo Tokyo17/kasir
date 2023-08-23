@@ -187,7 +187,7 @@ export default function Dashboard(){
         {dataPlaylists?.playlists?.map((item:{id:number,name:string},index:number)=>{
              return <div key={index} className='flex justify-between border border-indigo-600 h-9'>
                      <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
-                     <div className='song-action'>
+                     <div className='flex'>
                           <button onClick={()=>{deletePlaylist(item.id)}} >Delete</button>
                           <button onClick={()=>{renamePlaylist(item.id,item.name)}}>Rename</button>
                     </div>
