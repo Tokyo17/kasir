@@ -11,7 +11,7 @@ export const POST=async(req:NextRequest)=>{
     const {songId}=await req.json()
     const playlists=await prisma.likeds.create({
         data:{
-            userId:session?.user?.id,
+            userId:Number(session?.user?.id),
             songId:songId
         }
     })
@@ -24,7 +24,7 @@ export const DELETE=async(req:NextRequest)=>{
     const images=await prisma.likeds.delete({
         where:{
             userId_songId:{
-                userId:session?.user?.id,
+                userId:Number(session?.user?.id),
                 songId:songId
             }
         }
