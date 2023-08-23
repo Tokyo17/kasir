@@ -16,17 +16,10 @@ export const authOptions: NextAuthOptions={
         }
         return token
      },
-      async session({ session, token, user }) {
-        // console.log("USER : ",user)
-        // console.log("TOKEN : ",token)
-        if (session.user && token.id) {
-          session.user.id = token.id;
-      } else {
-          console.error("Either session.user or token.id is undefined.");
-      }
-        
-        return session
-      }
+     async session({session, token}) {
+      session.id = token.id;
+      return session;
+  }
     },
     providers: [
         CredentialsProvider({
