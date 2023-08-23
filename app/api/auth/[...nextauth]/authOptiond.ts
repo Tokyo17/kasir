@@ -19,7 +19,11 @@ export const authOptions: NextAuthOptions={
       async session({ session, token, user }) {
         // console.log("USER : ",user)
         // console.log("TOKEN : ",token)
-        session.user.id = token.id
+        if (session.user && token.id) {
+          session.user.id = token.id;
+      } else {
+          console.error("Either session.user or token.id is undefined.");
+      }
         
         return session
       }
