@@ -10,6 +10,8 @@ export type MyContextType = {
   dataMusic:any;
   setMusic: (message: any) => void;
   setDataMusic: (message: any) => void;
+  isPlaying:boolean;
+  setIsPlaying:(message:any)=>void;
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -32,6 +34,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const [dataMusic,setDataMusic]=useState<any>(null)
   const [music, setMusic] =useState<any>('');
   const [isPlaying, setIsPlaying] =useState(false);
+  // const [isPaused, setIsPaused] =useState(true);
 
   const {data:session,status}=useSession()
 
@@ -39,33 +42,39 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
   useEffect(()=>{
 
+    console.log(music)
       audio.current?.pause()
       audio.current=new Audio(music?.url||'')
       if ("mediaSession" in navigator) {
             try{
               navigator.mediaSession.metadata = new MediaMetadata({
-                title: music?.name,
+                title: music?.title,
                 artist:String( music?.index)+music?.name,
                 album: "The Ultimate Collection (Remastered)",
               });
-              navigator.mediaSession.metadata.title="sadhsadb"
+              navigator.mediaSession.metadata.title=music?.title
             }catch(err){
               console.log(err)
             }
         
+            navigator.mediaSession.setActionHandler("pause", () => {
+             setIsPlaying(false)
+             audio?.current?.pause()
+            });
+
+            navigator.mediaSession.setActionHandler("play", () => {
+              setIsPlaying(true)
+              audio?.current?.play()
+            });
         
             navigator.mediaSession.setActionHandler("previoustrack", () => {
-              // alert(JSON.stringify(dataMusic))
-              // console.log(music.index,dataMusic.length-1)
               if(music.index>=1){
                 setMusic(dataMusic[music.index-1])
               }
-              // setMusic()
             });
         
             navigator.mediaSession.setActionHandler("nexttrack", () => {
               if(music.index<=dataMusic.length-2){
-                // console.log(music.index,dataMusic.length-1)
                 setMusic(dataMusic[music.index+1])
               }
             });
@@ -75,6 +84,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
         
         
       audio.current.play()
+      setIsPlaying(true)
       if ('setPositionState' in navigator.mediaSession) {
         if(audio.current){
           audio.current.onloadedmetadata=()=>{
@@ -118,7 +128,9 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     music,
     setMusic,
     dataMusic,
-    setDataMusic
+    setDataMusic,
+    isPlaying,
+    setIsPlaying
   };
 
   return <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>;

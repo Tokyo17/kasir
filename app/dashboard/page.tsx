@@ -10,7 +10,7 @@ import Swal from "sweetalert2"
 
 export default function Dashboard(){
 
-    // const [dataMusic,setDataMusic]=useState<any>(null)
+    const [dataPlaylists,setDataPlaylists]=useState<any>(null)
     // const [music,setMusic]=useState<any>(null)
     const route=useRouter()
     const {data:session,status}=useSession()
@@ -38,7 +38,7 @@ export default function Dashboard(){
     //     url: item.url
     //   }));
       console.log(json)
-       setDataMusic(json)
+      setDataPlaylists(json)
     }
 
     
@@ -184,7 +184,7 @@ export default function Dashboard(){
         <p>ADD Playlist</p>
         <input onChange={(e)=>setName(e.target.value) } value={name}/>
         <button onClick={addPlaylist}>ADD</button>
-        {dataMusic?.playlists?.map((item:{id:number,name:string},index:number)=>{
+        {dataPlaylists?.playlists?.map((item:{id:number,name:string},index:number)=>{
              return <div key={index} className='flex justify-between border border-indigo-600 h-9'>
                      <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
                      <div className='song-action'>

@@ -51,7 +51,7 @@ model SongsOnPlaylists{
 model Songs {
   id    Int                 @id @default(autoincrement())
   title  String
-  url  String
+ url   String   @db.VarChar(255)
   likeds Likeds[]
   playlists SongsOnPlaylists[]  
 }

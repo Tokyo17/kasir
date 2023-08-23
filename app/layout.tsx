@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Providers } from './providers'
 import MyContextProvider from './MyContext'
+import NavButtom from './component/navBottom'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -26,6 +27,7 @@ export default function RootLayout({
         <Providers>
           <MyContextProvider>
             {children}
+            <NavButtom/>
           </MyContextProvider>
         </Providers>
       </body>

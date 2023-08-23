@@ -6,19 +6,21 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
-import { IoPlayOutline,IoHeartOutline,IoHeartSharp,IoAddCircleOutline } from 'react-icons/io5';
+import { IoPlayOutline,IoPauseSharp,IoHeartOutline,IoHeartSharp,IoAddCircleOutline } from 'react-icons/io5';
+import { useMyContext } from './MyContext'
 
 export default function Home() {
 
   const route=useRouter()
   const {data:session}=useSession()
-  const [dataMusic,setDataMusic]=useState<any>(null)
+  // const [dataMusic,setDataMusic]=useState<any>(null)
   const [dataPlaylist,setDataPlaylist]=useState<any>(null)
   const [dataPlaylistOpen,setDataPlaylistOpen]=useState(false)
   const [dataPlaylistLoad,setDataPlaylistLoad]=useState(false)
   const[showIndex,setShowIndex]=useState<number|null>(null)
   const dotRef = useRef<HTMLDivElement>(null);
 
+  const{music,setMusic,setDataMusic,dataMusic,isPlaying}=useMyContext()
   interface LikedEntry {
     userId: number;
     songId: number;
@@ -234,14 +236,14 @@ const unlikeHandler=async(songId:number)=>{
   return (
     <div >
         LANDING PAGE
-        <p>{JSON.stringify(session)}</p>
+        {/* <p>{JSON.stringify(session)}</p> */}
         <Link href="/dashboard">dashboard</Link>
         <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div>
-        {dataMusic?.songs?.map((item:{id:number,title:string,liked:boolean},index:number)=>{
+        {dataMusic?.songs?.map((item:{id:number,url:string,title:string,liked:boolean},index:number)=>{
             return <div  onClick={removeNavSong} className='list-song' key={index}>
                         <div className='song-number'>{index}</div>
-                        <div className='cursor-pointer play-icon'><IoPlayOutline size='30px'/></div>
+                        <div className='cursor-pointer play-icon'>{music.id==item.id&&isPlaying?<IoPauseSharp size='30px'/>:<IoPlayOutline  size='30px' onClick={()=>{setMusic(item)}}/>}</div>
                        <p className='title-song' >
                             {item.title}
                         </p>
@@ -252,6 +254,8 @@ const unlikeHandler=async(songId:number)=>{
                         </div>
                   </div>
         })}
+
+       
     </div>
   )
 }
