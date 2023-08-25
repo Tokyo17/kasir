@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions={
             // });
             // const userjson = await res.json();
             // console.log(userjson)
-
+            // ${process.env.NEXTAUTH_URL}
             const data =await fetch(`${process.env.NEXTAUTH_URL}/api/user?name=${credentials?.username}`,{
                         method:"GET",
                           headers:{

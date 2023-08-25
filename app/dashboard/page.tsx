@@ -7,14 +7,16 @@ import { DOMAttributes, FormEvent, FormEventHandler, useEffect, useRef, useState
 import { useMyContext } from "../MyContext"
 import Link from "next/link"
 import Swal from "sweetalert2"
+import { AiOutlineDelete,AiOutlineEdit } from "react-icons/ai";
+
 
 export default function Dashboard(){
 
-    const [dataPlaylists,setDataPlaylists]=useState<any>(null)
+    // const [dataPlaylists,setDataPlaylists]=useState<any>(null)
     // const [music,setMusic]=useState<any>(null)
     const route=useRouter()
     const {data:session,status}=useSession()
-    const{music,setMusic,setDataMusic,dataMusic}=useMyContext()
+    const{playlists,setPlaylists}=useMyContext()
     const[name,setName]=useState('')
 
 
@@ -38,7 +40,7 @@ export default function Dashboard(){
     //     url: item.url
     //   }));
       console.log(json)
-      setDataPlaylists(json)
+      setPlaylists(json)
     }
 
     
@@ -184,12 +186,12 @@ export default function Dashboard(){
         <p>ADD Playlist</p>
         <input onChange={(e)=>setName(e.target.value) } value={name}/>
         <button onClick={addPlaylist}>ADD</button>
-        {dataPlaylists?.playlists?.map((item:{id:number,name:string},index:number)=>{
+        {playlists?.playlists?.map((item:{id:number,name:string},index:number)=>{
              return <div key={index} className='flex justify-between border border-indigo-600 h-9'>
                      <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
                      <div className='flex'>
-                          <button onClick={()=>{deletePlaylist(item.id)}} >Delete</button>
-                          <button onClick={()=>{renamePlaylist(item.id,item.name)}}>Rename</button>
+                        <AiOutlineDelete size="30px" onClick={()=>{deletePlaylist(item.id)}}/>
+                        <AiOutlineEdit size="30px" onClick={()=>{renamePlaylist(item.id,item.name)}}/>
                     </div>
              </div>
 

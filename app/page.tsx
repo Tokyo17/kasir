@@ -236,7 +236,7 @@ const unlikeHandler=async(songId:number)=>{
   return (
     <div >
         LANDING PAGE
-        <p>{JSON.stringify(session)}</p>
+        <p>{JSON.stringify(session?.user?.name)}</p>
         <Link href="/dashboard">dashboard</Link>
         <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div>

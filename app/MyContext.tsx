@@ -12,6 +12,8 @@ export type MyContextType = {
   setDataMusic: (message: any) => void;
   isPlaying:boolean;
   setIsPlaying:(message:any)=>void;
+  playlists: any;
+  setPlaylists:(message:any)=>void;
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -34,7 +36,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const [dataMusic,setDataMusic]=useState<any>(null)
   const [music, setMusic] =useState<any>('');
   const [isPlaying, setIsPlaying] =useState(false);
-  // const [isPaused, setIsPaused] =useState(true);
+  const [playlists, setPlaylists] =useState<any>(null);
 
   const {data:session,status}=useSession()
 
@@ -130,7 +132,9 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     dataMusic,
     setDataMusic,
     isPlaying,
-    setIsPlaying
+    setIsPlaying,
+    playlists,
+    setPlaylists
   };
 
   return <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>;
