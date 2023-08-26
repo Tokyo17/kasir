@@ -176,22 +176,25 @@ export default function Dashboard(){
 
     return(
         <div>
-            Dashboard
+            {/* Dashboard
            
             <Link href="/">landing2</Link>
 
         <div onClick={()=>{route.push('/login')}}>Login</div>
-        <div onClick={()=>{signOut({redirect:false})}}>Logout</div>
+        <div onClick={()=>{signOut({redirect:false})}}>Logout</div> */}
         <div onClick={()=>{route.push('/like')}}>List song like</div>
         <p>ADD Playlist</p>
         <input onChange={(e)=>setName(e.target.value) } value={name}/>
         <button onClick={addPlaylist}>ADD</button>
         {playlists?.playlists?.map((item:{id:number,name:string},index:number)=>{
-             return <div key={index} className='flex justify-between border border-indigo-600 h-9'>
-                     <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
-                     <div className='flex'>
-                        <AiOutlineDelete size="30px" onClick={()=>{deletePlaylist(item.id)}}/>
-                        <AiOutlineEdit size="30px" onClick={()=>{renamePlaylist(item.id,item.name)}}/>
+             return <div key={index} className='list-playlist'>
+                    <div className='playlist-number'>{index+1}</div>
+                    <div className="playlist-title">
+                       <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
+                    </div>
+                     <div className='playlist-action'>
+                        <AiOutlineDelete size="20px" onClick={()=>{deletePlaylist(item.id)}}/>
+                        <AiOutlineEdit size="20px" onClick={()=>{renamePlaylist(item.id,item.name)}}/>
                     </div>
              </div>
 
