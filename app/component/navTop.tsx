@@ -32,7 +32,7 @@ export default function NavTop(){
                         route.push("/like")}}>LOVE SONG</div>
             <div className="nav-link" onClick={()=>{
                           setIsShow(false)
-                        route.push("/playlist")}}>PLYALIST</div>
+                        route.push("/dashboard")}}>PLYALIST</div>
             <div className="nav-link">SETTING</div>
             {
                 session?    <div className="sign">
