@@ -1,7 +1,7 @@
 'use client'
 import { IoPlayCircleOutline,IoPauseCircleOutline,IoPlayBackCircleOutline,IoPlayForwardCircleOutline} from "react-icons/io5";
 import { useMyContext } from "../MyContext";
-export default function navButtom(){
+export default function NavButtom(){
 
 
     const {backHandler,nextHandler,music,isPlaying,playHandler,pauseHandler}=useMyContext()
