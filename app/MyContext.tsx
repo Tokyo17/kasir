@@ -14,6 +14,10 @@ export type MyContextType = {
   setIsPlaying:(message:any)=>void;
   playlists: any;
   setPlaylists:(message:any)=>void;
+  playHandler:(message:any)=>void;
+  pauseHandler:(message:any)=>void;
+  backHandler:(message:any)=>void;
+  nextHandler:(message:any)=>void;
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -41,6 +45,34 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const {data:session,status}=useSession()
 
   const audio = useRef(typeof Audio !== "undefined" ? new Audio("") : undefined);
+
+
+  audio.current?.addEventListener("ended", function(){
+    setIsPlaying(false)
+  });
+
+  const playHandler=()=>{
+    if(music){
+    audio.current?.play()
+    setIsPlaying(true)}
+  }
+  const pauseHandler=()=>{
+    if(music){
+    audio.current?.pause()
+    setIsPlaying(false)}
+  }
+
+  const backHandler=()=>{
+    if(music.index>=1){
+      setMusic(dataMusic?.songs[music.index-1])
+    }
+  }
+
+  const nextHandler=()=>{
+    if(music.index<=dataMusic?.songs.length-2){
+      setMusic(dataMusic?.songs[music.index+1])
+    }
+  }
 
   useEffect(()=>{
 
@@ -71,12 +103,12 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
         
             navigator.mediaSession.setActionHandler("previoustrack", () => {
               if(music.index>=1){
-                setMusic(dataMusic[music.index-1])
+                setMusic(dataMusic?.songs[music.index-1])
               }
             });
         
             navigator.mediaSession.setActionHandler("nexttrack", () => {
-              if(music.index<=dataMusic.length-2){
+              if(music.index<=dataMusic?.songs.length-2){
                 setMusic(dataMusic[music.index+1])
               }
             });
@@ -134,7 +166,12 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     isPlaying,
     setIsPlaying,
     playlists,
-    setPlaylists
+    setPlaylists,
+    playHandler,
+    pauseHandler,
+    nextHandler,
+    backHandler
+
   };
 
   return <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>;

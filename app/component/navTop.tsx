@@ -25,7 +25,7 @@ export default function NavTop(){
             <IoMenuSharp onClick={()=>setIsShow(!isShow)} size="35px"/>
         </div>
 
-        <div className="side-nav" style={isShow?{}:{transform:"translate(400px, -42px)"}}>
+        <div className="side-nav" style={isShow?{}:{transform:"translate(400px, -107px)"}}>
             <div className="nav-link">MY SONG</div>
             <div className="nav-link" onClick={()=>{
                           setIsShow(false)

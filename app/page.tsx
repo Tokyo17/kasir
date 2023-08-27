@@ -234,16 +234,17 @@ const unlikeHandler=async(songId:number)=>{
 
 
   return (
-    <div >
+    <div className='container'>
         {/* LANDING PAGE */}
         {/* <p>{JSON.stringify(session?.user?.name)}</p> */}
         {/* <Link href="/dashboard">dashboard</Link> */}
         {/* <div onClick={()=>{route.push('/login')}}>Login</div>
         <div onClick={()=>{signOut({redirect:false})}}>Logout</div> */}
-        {dataMusic?.songs?.map((item:{id:number,url:string,title:string,liked:boolean},index:number)=>{
+        {dataMusic?.songs?.map((item:{id:number,index:number,url:string,title:string,liked:boolean},index:number)=>{
+            item.index=index
             return <div  onClick={removeNavSong} className='list-song' key={index}>
                         <div className='song-number'>{index+1}</div>
-                        <div className='cursor-pointer play-icon'>{music.id==item.id&&isPlaying?<IoPauseSharp size='30px'/>:<IoPlayOutline  size='30px' onClick={()=>{setMusic(item)}}/>}</div>
+                        <div className='cursor-pointer play-icon'>{music?.id==item?.id&&isPlaying?<IoPauseSharp size='30px'/>:<IoPlayOutline  size='30px' onClick={()=>{setMusic(item)}}/>}</div>
                        <p className='title-song' >
                             {item.title}
                         </p>
