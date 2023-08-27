@@ -29,15 +29,32 @@ body{
   position: relative;
   height: 100%;
 }
-.container{
+.content{
   overflow-y: scroll;
   height: calc(100% - 170px);
+  margin: var(--margin);
+}
+
+
+ 
+.content::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Handle */
+.content::-webkit-scrollbar-thumb {
+  background: #45b98d; 
+}
+
+/* Handle on hover */
+.content::-webkit-scrollbar-thumb:hover {
+  background: #3daa80; 
 }
 .list-song{
   display: flex;
   justify-content: space-between;
   height: 65px;
-  margin: var(--margin);
+  margin-right: 10px;
 }
 .song-number{
   width: 40px;

@@ -12,7 +12,7 @@ export default function navButtom(){
         </div>
         <div className="music-control">
             <div className="music-control-back">
-                 <IoPlayBackCircleOutline onClick={backHandler} size="40px"/>
+                 <IoPlayBackCircleOutline  onClick={backHandler} size="40px"/>
             </div>
             <div className="music-control-play">
                {isPlaying&&music?.title?<IoPauseCircleOutline onClick={pauseHandler} size="50px"/>: <IoPlayCircleOutline onClick={playHandler} size="50px"/>}
