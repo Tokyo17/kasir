@@ -8,6 +8,7 @@ import { useMyContext } from "../MyContext"
 import Link from "next/link"
 import Swal from "sweetalert2"
 import { AiOutlineDelete,AiOutlineEdit } from "react-icons/ai";
+import { IoAdd } from "react-icons/io5";
 
 
 export default function Dashboard(){
@@ -45,9 +46,41 @@ export default function Dashboard(){
 
     
     const addPlaylist=async()=>{
+        let inputValue
 
-        if(name){
-            await fetch("/api/playlist",{
+        const { value: playlistName } = await  Swal.fire({
+          title: 'Enter your name playlist',
+          input: 'text',
+          inputValue: inputValue,
+          showCancelButton: true,
+          inputValidator: (value) => {
+            if (!value) {
+              return 'You need to write something!'
+            }else{
+
+            }
+          }
+        })
+        if (playlistName) {
+                            Swal.fire({
+                    title: "Adding playlist",
+                    html: 'please waiting for a seconds.',
+                    didOpen:()=>{
+                        Swal.showLoading()
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false  
+
+                    
+                })
+                addPlaylistApi(playlistName)      
+          }
+    }
+
+ 
+    const addPlaylistApi=async(name:string)=>{
+                    await fetch("/api/playlist",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -57,15 +90,27 @@ export default function Dashboard(){
                 })
             }).then(res=>{
                 getData()
-                setName('')
+                if(res.ok){
+                    getData()
+                    Swal.fire({
+                        title:'Success!',
+                        icon:'success',
+                        timer: 1000,
+                        showConfirmButton:false
+                      })
+                }else{
+                    Swal.fire({
+                        title:'Error!',
+                        icon:'error',
+                        timer: 1000,
+                        showConfirmButton:false
+                      })
+                }
                 console.log(res)
             }).catch(err=>{
                 console.log(err)
             })
-        }
     }
-
- 
 
 
     const deletePlaylist=async(id:number)=>{
@@ -175,17 +220,11 @@ export default function Dashboard(){
 
 
     return(
-        <div>
-            {/* Dashboard
-           
-            <Link href="/">landing2</Link>
+        <div className="content">
+        <div onClick={addPlaylist} className="add-playlist">
+            <IoAdd color="#45b98d" size="30px"/>Add playlist
+        </div>
 
-        <div onClick={()=>{route.push('/login')}}>Login</div>
-        <div onClick={()=>{signOut({redirect:false})}}>Logout</div> */}
-        <div onClick={()=>{route.push('/like')}}>List song like</div>
-        <p>ADD Playlist</p>
-        <input onChange={(e)=>setName(e.target.value) } value={name}/>
-        <button onClick={addPlaylist}>ADD</button>
         {playlists?.playlists?.map((item:{id:number,name:string},index:number)=>{
              return <div key={index} className='list-playlist'>
                     <div className='playlist-number'>{index+1}</div>
@@ -193,8 +232,8 @@ export default function Dashboard(){
                        <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
                     </div>
                      <div className='playlist-action'>
-                        <AiOutlineDelete size="20px" onClick={()=>{deletePlaylist(item.id)}}/>
-                        <AiOutlineEdit size="20px" onClick={()=>{renamePlaylist(item.id,item.name)}}/>
+                        <AiOutlineDelete color="#45b98d" size="25px" onClick={()=>{deletePlaylist(item.id)}}/>
+                        <AiOutlineEdit size="25px" onClick={()=>{renamePlaylist(item.id,item.name)}}/>
                     </div>
              </div>
 

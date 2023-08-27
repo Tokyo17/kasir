@@ -40,15 +40,17 @@ body{
 .content::-webkit-scrollbar {
   width: 10px;
 }
-
+.content::-webkit-scrollbar-track{
+  background-color: rgb(68, 68, 68);
+}
 /* Handle */
 .content::-webkit-scrollbar-thumb {
-  background: #45b98d; 
+  background: white; 
 }
 
 /* Handle on hover */
 .content::-webkit-scrollbar-thumb:hover {
-  background: #3daa80; 
+  background: rgb(224, 224, 224); 
 }
 .list-song{
   display: flex;
@@ -108,33 +110,41 @@ input {
 
 
 /* ======== PLAYLIST =========== */
-
+.add-playlist{
+  display: flex;
+  border: 1px solid;
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  width: 140px;
+  margin: auto;
+  cursor: pointer;
+}
 .list-playlist{
   display: flex;
   justify-content: space-between;
-  align-items: center;
   height: 65px;
-  margin: var(--margin);
-  /* border: 1px solid salmon; */
+  margin-right: 10px;
 }
 .playlist-number{
-  /* border: 1px solid white; */
   width: 40px;
-  height: 100%;
   display: flex;
   align-items: center;
   font-size: 20px;
 }
 
 .playlist-title{
-  /* border: 1px solid white; */
+  /* border: 1px solid; */
+  display: flex;
+  align-items: center;
   flex: 4;
+  font-weight: 400;
+  font-size: 20px;
 }
 .playlist-title p{
   cursor: pointer;
 }
 .playlist-action{
-  display: flex;
   width: 65px;
   display: flex;
   justify-content: space-between;
