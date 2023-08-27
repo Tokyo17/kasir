@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic'
 
 // Definisikan tipe data untuk context
 export type MyContextType = {
+  dataMusicLiked:any;
+  setDataMusicLiked: (message: any) => void;
   music: any;
   dataMusic:any;
   setMusic: (message: any) => void;
@@ -38,6 +40,7 @@ type MyContextProviderProps = {
 
 const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const [dataMusic,setDataMusic]=useState<any>(null)
+  const [dataMusicLiked,setDataMusicLiked]=useState<any>(null)
   const [music, setMusic] =useState<any>('');
   const [isPlaying, setIsPlaying] =useState(false);
   const [playlists, setPlaylists] =useState<any>(null);
@@ -159,6 +162,8 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   },[status])
 
   const contextValue: MyContextType = {
+    dataMusicLiked,
+    setDataMusicLiked,
     music,
     setMusic,
     dataMusic,
