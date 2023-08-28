@@ -119,6 +119,7 @@ input {
   width: 140px;
   margin: auto;
   cursor: pointer;
+  font-weight: 600;
 }
 .list-playlist{
   display: flex;
@@ -227,6 +228,7 @@ input {
     justify-content: space-around;
 }
 .nav-link{
+  cursor: pointer;
   margin-left: 30px;
 }
 
@@ -239,6 +241,7 @@ input {
   margin: 0px 10px;
 }
 .signout{
+  cursor: pointer;
   border: 1px solid;
   background-color: rgb(214, 70, 70);
   padding: 10px;
@@ -246,11 +249,13 @@ input {
 }
 .signin{
   /* border: 1px solid; */
+  cursor: pointer;
   background-color: #45b98d;
   padding: 10px;
   border-radius: 5px;
 }
 .register{
+  cursor: pointer;
   border: 1px solid;
   padding: 10px;
   /* background-color: white;

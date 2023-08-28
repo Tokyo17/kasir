@@ -8,7 +8,7 @@ import ListMusic from './component/listMusic'
 export default function Home() {
 
 
-  const{music,setMusic,setDataMusic,dataMusic,isPlaying}=useMyContext()
+  const{music,setDataMusic,dataMusic,isPlaying}=useMyContext()
 
   const getData=async()=>{
 

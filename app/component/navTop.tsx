@@ -26,14 +26,16 @@ export default function NavTop(){
         </div>
 
         <div className="side-nav" style={isShow?{}:{transform:"translate(400px, -107px)"}}>
+        <div className="nav-link" onClick={()=>{
+                          setIsShow(false)
+                        route.push("/")}}>HOME</div>
             <div className="nav-link">MY SONG</div>
             <div className="nav-link" onClick={()=>{
                           setIsShow(false)
-                        route.push("/like")}}>LOVE SONG</div>
+                        route.push("/like")}}>LOVED SONG</div>
             <div className="nav-link" onClick={()=>{
                           setIsShow(false)
                         route.push("/dashboard")}}>PLYALIST</div>
-            <div className="nav-link">SETTING</div>
             {
                 session?    <div className="sign">
                                  <div className="signout"  onClick={()=>{

@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic'
 
 // Definisikan tipe data untuk context
 export type MyContextType = {
+  dataQueueMusic:any;
+  setDataQueueMusic: (message: any) => void;
   dataMusicLiked:any;
   setDataMusicLiked: (message: any) => void;
   music: any;
@@ -16,7 +18,7 @@ export type MyContextType = {
   setIsPlaying:(message:any)=>void;
   playlists: any;
   setPlaylists:(message:any)=>void;
-  playHandler:(message:any)=>void;
+  playHandler:()=>void;
   pauseHandler:(message:any)=>void;
   backHandler:(message:any)=>void;
   nextHandler:(message:any)=>void;
@@ -39,6 +41,7 @@ type MyContextProviderProps = {
 };
 
 const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
+  const[    dataQueueMusic,setDataQueueMusic]=useState<any>(null)
   const [dataMusic,setDataMusic]=useState<any>(null)
   const [dataMusicLiked,setDataMusicLiked]=useState<any>(null)
   const [music, setMusic] =useState<any>('');
@@ -56,93 +59,88 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
   const playHandler=()=>{
     if(music){
-    audio.current?.play()
+    audio?.current?.play()
     setIsPlaying(true)}
   }
   const pauseHandler=()=>{
     if(music){
-    audio.current?.pause()
+    audio?.current?.pause()
     setIsPlaying(false)}
   }
 
   const backHandler=()=>{
     if(music.index>=1){
-      setMusic(dataMusic?.songs[music.index-1])
+      setMusic(dataQueueMusic?.songs[music.index-1])
     }
   }
 
   const nextHandler=()=>{
-    if(music.index<=dataMusic?.songs.length-2){
-      setMusic(dataMusic?.songs[music.index+1])
+    if(music.index<=dataQueueMusic?.songs.length-2){
+      setMusic(dataQueueMusic?.songs[music.index+1])
     }
   }
+  const [oldMusic,setOldMusic]=useState<any>(null)
 
   useEffect(()=>{
 
-    console.log(music)
+    console.log(music?.id,music?.index,oldMusic?.id,oldMusic?.index)
+    if(music?.id!=oldMusic?.id){
       audio.current?.pause()
       audio.current=new Audio(music?.url||'')
-      if ("mediaSession" in navigator) {
-            try{
-              navigator.mediaSession.metadata = new MediaMetadata({
-                title: music?.title,
-                artist:String( music?.index)+music?.name,
-                album: "The Ultimate Collection (Remastered)",
-              });
-              navigator.mediaSession.metadata.title=music?.title
-            }catch(err){
-              console.log(err)
-            }
-        
-            navigator.mediaSession.setActionHandler("pause", () => {
-             setIsPlaying(false)
-             audio?.current?.pause()
-            });
-
-            navigator.mediaSession.setActionHandler("play", () => {
-              setIsPlaying(true)
-              audio?.current?.play()
-            });
-        
-            navigator.mediaSession.setActionHandler("previoustrack", () => {
-              if(music.index>=1){
-                setMusic(dataMusic?.songs[music.index-1])
-              }
-            });
-        
-            navigator.mediaSession.setActionHandler("nexttrack", () => {
-              if(music.index<=dataMusic?.songs.length-2){
-                setMusic(dataMusic[music.index+1])
-              }
-            });
-        }else{
-          console.log("media session not work")
-        }
-        
-        
       audio.current.play()
       setIsPlaying(true)
       if ('setPositionState' in navigator.mediaSession) {
         if(audio.current){
           audio.current.onloadedmetadata=()=>{
-      
-            // if(audio.current.duration){
-            //   const interval = setInterval(() => {
-                // console.log(audio.current.currentTime)
                 navigator.mediaSession.setPositionState({
                   duration: 0,
                   position: 0,
                 }); 
-            //   }, 1000); // Interval of 1 second
-            //   return () => {
-            //     clearInterval(interval);
-            //   };
-            // }     
           }
         }
       }
       setIsPlaying(true)
-      // console.log(navigator.mediaSession.metadata)
+      setOldMusic(music)
+
+      }
+      if ("mediaSession" in navigator) {
+        try{
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: music?.title,
+            artist:String( music?.index)+music?.name,
+            album: "The Ultimate Collection (Remastered)",
+          });
+          navigator.mediaSession.metadata.title=music?.title
+        }catch(err){
+          console.log(err)
+        }
+    
+        navigator.mediaSession.setActionHandler("pause", () => {
+         setIsPlaying(false)
+         audio?.current?.pause()
+        });
+
+        navigator.mediaSession.setActionHandler("play", () => {
+          setIsPlaying(true)
+          audio?.current?.play()
+        });
+    
+        navigator.mediaSession.setActionHandler("previoustrack", () => {
+          console.log(dataQueueMusic)
+          if(music.index>=1){
+            setMusic(dataQueueMusic?.songs[music.index-1])
+          }
+        });
+    
+        navigator.mediaSession.setActionHandler("nexttrack", () => {
+          if(music.index<=dataQueueMusic?.songs.length-2){
+            setMusic(dataQueueMusic[music.index+1])
+          }
+        });
+    }else{
+      console.log("media session not work")
+    }
+    
   },[music])
 
 
@@ -162,6 +160,8 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   },[status])
 
   const contextValue: MyContextType = {
+    dataQueueMusic,
+    setDataQueueMusic,
     dataMusicLiked,
     setDataMusicLiked,
     music,

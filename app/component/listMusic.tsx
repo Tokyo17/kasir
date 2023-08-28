@@ -13,7 +13,7 @@ import { useMyContext } from '../MyContext'
 export default function ListMusic({dataMusic,getData}:any) {
 
 
-  const{music,setMusic,isPlaying}=useMyContext()
+  const{music,setMusic,isPlaying,setDataQueueMusic,playHandler,pauseHandler}=useMyContext()
 
 
 
@@ -192,10 +192,21 @@ const unlikeHandler=async(songId:number)=>{
         console.log(err)
     })
 }
-// useEffect(()=>{
-//   dataPlaylist&&
 
-// },[dataPlaylist])
+const playOrPauseHandler=(item:any)=>{
+    if(music?.id==item?.id&&isPlaying){
+    
+     return  <IoPauseSharp size='30px' onClick={pauseHandler}/>
+    }else{
+       return <IoPlayOutline size='30px' onClick={()=>{
+            // if(music?.id==item?.id){
+                playHandler()
+                setDataQueueMusic(dataMusic)
+              setMusic(item)
+            // }
+        }}/>
+    }
+}
 
 
   return (
@@ -204,7 +215,7 @@ const unlikeHandler=async(songId:number)=>{
             item.index=index
             return <div  className='list-song' key={index}>
                         <div className='song-number'>{index+1}</div>
-                        <div className='cursor-pointer play-icon'>{music?.id==item?.id&&isPlaying?<IoPauseSharp size='30px'/>:<IoPlayOutline size='30px' onClick={()=>{setMusic(item)}}/>}</div>
+                        <div className='cursor-pointer play-icon'>{playOrPauseHandler(item)}</div>
                        <p className='title-song' >
                             {item.title}
                         </p>
