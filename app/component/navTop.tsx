@@ -25,10 +25,9 @@ export default function NavTop(){
             focusConfirm: false,
             showLoaderOnConfirm: true,
             preConfirm: async() => {
-              if( document.getElementById('swal-input1')?.value&&document.getElementById('swal-input2')?.value){
-                console.log(document.getElementById('swal-input1')?.value)
+              if( (document.getElementById('swal-input1')  as HTMLInputElement)?.value&&(document.getElementById('swal-input2')  as HTMLInputElement)?.value){
                 const statusLogin=await  signIn("credentials",
-                { username:    document.getElementById('swal-input1')?.value, 
+                { username:   (document.getElementById('swal-input1')  as HTMLInputElement)?.value, 
                     password: "1234",
                     redirect:false
                 }
