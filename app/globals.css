@@ -156,6 +156,15 @@ input {
   cursor: pointer;
 }
 
+/* ============= LOGIN =============== */
+.pass-title{
+  margin-bottom: -16px;
+    margin-top: 12px;
+}
+.username-title{
+  margin-bottom: -12px;
+    margin-top: 12px;
+}
 /* ========== NAV BUTTOM =========== */
 .nav-bottom{
   display: flex;

@@ -17,29 +17,43 @@ export default function ListMusic({dataMusic,getData}:any) {
 
 
 
-
+  const {data:session}=useSession()
 
 const getDataPlaylist=async(songId:number)=>{
-  Swal.showLoading()
+    if(session){
+      Swal.fire({
+        heightAuto:false,
+        didOpen: () => {
+            Swal.showLoading()
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
+      })
 
-  try{
-    const data= await fetch(`/api/playlist?songid=${songId}`)
-    const json=await data.json()
-            const j = json?.playlists?.reduce((obj:any, item:any) => {
-              if(!item.listed){
-              obj[item.id] = item.name;}
-              return obj;
-          }, {});
-  console.log(json)
-  console.log(j)
-    showNavPlaylist(j,songId)
-  }catch(err){
-    console.log(err)
-  }finally{
+        try{
+            const data= await fetch(`/api/playlist?songid=${songId}`)
+            const json=await data.json()
+                    const j = json?.playlists?.reduce((obj:any, item:any) => {
+                    if(!item.listed){
+                    obj[item.id] = item.name;}
+                    return obj;
+                }, {});
+        console.log(json)
+        console.log(j)
+            showNavPlaylist(j,songId)
+        }catch(err){
+            console.log(err)
+        }finally{
 
-
-  }
-
+        }
+    }else{
+        Swal.fire({
+            icon: 'info',
+            title: 'Oops...',
+            text: 'Plase login first',
+          })
+    }
 }
 const showNavPlaylist=async(value:any,songId:number)=>{
 
@@ -48,8 +62,10 @@ const showNavPlaylist=async(value:any,songId:number)=>{
     input: 'select',
     inputOptions: value,
     showDenyButton:true,
+    denyButtonText:"Add",
     inputPlaceholder: 'Select a playlist',
     showCancelButton: true,
+    heightAuto:false,
     cancelButtonColor:'#7066e0',
     inputValidator: (value) => {
       return new Promise((resolve) => {
@@ -144,28 +160,35 @@ const addPlaylist=async(name:string,songId:number)=>{
 }
 
 const likeHandler=async(songId:number)=>{
-
-    Swal.showLoading()
-      await fetch("/api/likesong",{
-          method:"POST",
-          headers:{
-              "Content-Type":"application/json"
-          },
-          body:JSON.stringify({
-              songId:songId
+    if(session){
+        Swal.showLoading()
+        await fetch("/api/likesong",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                songId:songId
+            })
+        }).then(res=>{
+            Swal.fire({
+                title:'Success!',
+                icon:'success',
+                timer: 600,
+                showConfirmButton:false
+            })
+            // getDataPlaylist(songId)
+            getData()
+        }).catch(err=>{
+            console.log(err)
+        })
+    }else{
+        Swal.fire({
+            icon: 'info',
+            title: 'Oops...',
+            text: 'Plase login first',
           })
-      }).then(res=>{
-          Swal.fire({
-            title:'Success!',
-            icon:'success',
-            timer: 600,
-            showConfirmButton:false
-          })
-          // getDataPlaylist(songId)
-          getData()
-      }).catch(err=>{
-          console.log(err)
-      })
+    }
 }
 
 const unlikeHandler=async(songId:number)=>{
