@@ -96,7 +96,7 @@ export default function NavTop(){
         <div className="nav-link" onClick={()=>{
                           setIsShow(false)
                         route.push("/")}}>HOME</div>
-            <div className="nav-link">MY SONG</div>
+            <div className="nav-link" onClick={()=>{navLink("/mymusic")}}>MY SONG</div>
             <div className="nav-link" onClick={()=>{navLink("/like")}}>LOVED SONG</div>
             <div className="nav-link" onClick={()=>{navLink("/dashboard")}}>PLYALIST</div>
             {

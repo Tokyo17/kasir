@@ -79,6 +79,11 @@ body{
   flex: 4;
   font-weight: 500;
   font-size: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    line-height: 65px;
+    white-space: nowrap;
 }
 .song-duration{
   /* border: 1px solid; */
@@ -116,7 +121,7 @@ input {
   justify-content: center;
   align-items: center;
   height: 46px;
-  width: 140px;
+  width: 160px;
   margin: auto;
   cursor: pointer;
   font-weight: 600;
@@ -164,6 +169,20 @@ input {
 .username-title{
   margin-bottom: -12px;
     margin-top: 12px;
+}
+
+
+/* ==================== MY MUSIC ==================== */
+.swal-input-image{
+  width: 310px;
+  margin-top: 20px;
+  padding-top: 8px;
+  margin-left: 80px;
+  outline: none;
+}
+.upload-title{
+  margin-bottom: -16px;
+    margin-top: 20px;
 }
 /* ========== NAV BUTTOM =========== */
 .nav-bottom{
@@ -276,4 +295,11 @@ input {
   :root{
     --margin:0px 20px;
   }
+}
+
+@media screen and (max-width: 730px) {
+  
+.title-song{
+  font-size: 17px;
+}
 }

@@ -89,7 +89,6 @@ export default function Dashboard(){
                     name:name
                 })
             }).then(res=>{
-                getData()
                 if(res.ok){
                     getData()
                     Swal.fire({
