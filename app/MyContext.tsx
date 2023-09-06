@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { createContext, useContext } from 'react';
 import dynamic from 'next/dynamic'
+import Swal from 'sweetalert2';
 
 // Definisikan tipe data untuk context
 export type MyContextType = {
@@ -22,6 +23,7 @@ export type MyContextType = {
   pauseHandler:(message:any)=>void;
   backHandler:(message:any)=>void;
   nextHandler:(message:any)=>void;
+  successUploadMusic:()=>void;
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -145,6 +147,18 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
 
 
+  // ======= FUNCTION HANDLER ===========
+  const successUploadMusic=()=>{
+    Swal.fire({
+      title:'Success!',
+      icon:'success',
+      timer: 1000,
+      toast:true,
+      heightAuto:false,
+      position: 'top-end',
+      showConfirmButton:false
+    })
+  }
 
 
 
@@ -175,7 +189,8 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     playHandler,
     pauseHandler,
     nextHandler,
-    backHandler
+    backHandler,
+    successUploadMusic
 
   };
 

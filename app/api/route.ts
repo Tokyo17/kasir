@@ -17,13 +17,14 @@ export const GET =async(req:NextRequest)=>{
         orderBy:{id:"desc"}
     })
 
-    const songs =result.map((song:{id:number,title:string,url:string,likeds:{userId: number,songId: number}[]}) => (
-          {
-          "id": song.id,
-          "title": song.title,
-          "url": song.url,
-          "liked": song.likeds.some(likedEntry => likedEntry.userId === Number(session?.user?.id)) // Change userId to the desired user's ID
-        }))
+    const songs =result.map((song:{id:number,duration:string,title:string,url:string,likeds:{userId: number,songId: number}[]}) => (
+        {
+        "id": song.id,
+        "title": song.title,
+        "url": song.url,
+        "duration":song.duration,
+        "liked": song.likeds.some(likedEntry => likedEntry.userId === Number(session?.user?.id)) // Change userId to the desired user's ID
+      }))
 
     return NextResponse.json({songs})
 }

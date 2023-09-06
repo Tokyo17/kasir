@@ -28,6 +28,7 @@ model Lists {
 model Users {
   id         Int                 @id @default(autoincrement())
   name      String 
+  songs   Songs[]
   likeds Likeds[]
   playlists Playlists[]
 }
@@ -50,8 +51,11 @@ model SongsOnPlaylists{
 
 model Songs {
   id    Int                 @id @default(autoincrement())
+  user    Users?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId  Int
   title  String
- url   String   @db.VarChar(255)
+  duration String
+  url   String   @db.VarChar(255)
   likeds Likeds[]
   playlists SongsOnPlaylists[]  
 }

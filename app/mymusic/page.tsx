@@ -13,11 +13,11 @@ import { storage } from '../firebase';
 export default function MyMusic() {
 
   const {data:session}=useSession()
-  const{music,setDataMusic,dataMusic,isPlaying}=useMyContext()
+  const{music,setDataMusic,dataMusic,successUploadMusic}=useMyContext()
 
   const getData=async()=>{
 
-    const data= await fetch("/api")
+    const data= await fetch("/api/songs")
     const json=await data?.json()
 
     // console.log(outputJSON)
@@ -32,7 +32,7 @@ export default function MyMusic() {
 
 
   
-  const addMusic=async(title:string,url:string)=>{
+  const addMusic=async(title:string,url:string,duration:string)=>{
     await fetch("/api/songs",{
 method:"POST",
 headers:{
@@ -40,19 +40,13 @@ headers:{
 },
 body:JSON.stringify({
     title:title,
-    url:url
+    url:url,
+    duration:duration
 })
 }).then(res=>{
 if(res.ok){
     getData()
-    Swal.fire({
-        title:'Success!',
-        icon:'success',
-        timer: 1000,
-        toast:true,
-        position: 'top-end',
-        showConfirmButton:false
-      })
+    successUploadMusic()
 }else{
     Swal.fire({
         title:'Error!s',
@@ -66,6 +60,7 @@ console.log(res)
 console.log(err)
 })
 }
+// const audio = useRef(typeof Audio !== "undefined" ? new Audio("") : undefined);
 
   const popUpUpload=async()=>{
     const { value: formValues } = await Swal.fire({
@@ -79,38 +74,71 @@ console.log(err)
         preConfirm: async() => {
             const inputElement = document.getElementById('swal-inputImage') as HTMLInputElement;
             const file = inputElement.files ? inputElement.files[0] : null;
+            const reader = new FileReader();
+            let duration=''
+
             if(file){
-                console.log(file)
-                Swal.fire({
-                    title: "Uploading music",
-                    didOpen:()=>{
-                        Swal.showLoading()
-                    },
-                    toast:true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false          
-                })
 
-                const storageRef=ref(storage,`music/${file?.name}`)
-                const uploadTask=uploadBytesResumable(storageRef,file)
+                reader.onload = () => {
+                    const audioUrl = reader.result as string || '';
+                    
+                   const  audio = new Audio(audioUrl);
+                    audio.addEventListener('loadedmetadata', () => {
+                        const time =Math.floor(audio?.duration)
+                        const minutes = Math.floor(time / 60);
+                        const seconds = time - minutes * 60;
+                        duration=`${minutes}:${seconds}`
+                        console.log(duration)
 
-              return  uploadTask.on("state_changed",
-               ()=>{
+                    const storageRef=ref(storage,`music/${file?.name}`)
+                    const uploadTask=uploadBytesResumable(storageRef,file)
 
-                },(err:any)=>{
-                    Swal.showValidationMessage(
-                        `please input your music`
-                      )
-                },()=>{
-                    getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
-                       addMusic(file?.name,url)
+                return  uploadTask.on("state_changed",
+                     (snapshot)=>{
+                        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                        console.log(progress)
+                        Swal.fire({
+                            title: `Uploading music ${progress}%`,
+                            didOpen:()=>{
+                                Swal.showLoading()
+                            },
+                            
+                            toast:true,
+                            heightAuto:false,
+                            // showClass:{
+                            //     popup: '',
+                            //     backdrop: '',
+                            //     icon: ''
+                            // },
+                            // hideClass:{
+                            //     popup: '',
+                            //     backdrop: '',
+                            //     icon: ''
+                            // },
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false          
+                        })
+    
+                    },(err:any)=>{
+                        Swal.showValidationMessage(
+                            `please input your music`
+                        )
+                    },()=>{
+                        getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
+                        addMusic(file?.name,url,duration)
 
-                    })
-                }
-                )
+                        })
+                    }
+                    )
+
+                    });
+                    // Mulai memuat audio
+                    audio.src = audioUrl;
+                };
+                reader.readAsDataURL(file);
             }else{
                 Swal.showValidationMessage(
                     `please input your music`

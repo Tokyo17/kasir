@@ -234,7 +234,7 @@ const playOrPauseHandler=(item:any)=>{
 
   return (
     <div className='content'>
-        {dataMusic?.songs?.map((item:{id:number,index:number,url:string,title:string,liked:boolean},index:number)=>{
+        {dataMusic?.songs?.map((item:{id:number,duration:string,index:number,url:string,title:string,liked:boolean},index:number)=>{
             item.index=index
             return <div  className='list-song' key={index}>
                         <div className='song-number'>{index+1}</div>
@@ -242,7 +242,7 @@ const playOrPauseHandler=(item:any)=>{
                        <p className='title-song' >
                             {item.title}
                         </p>
-                        <div className='song-duration'>2:30</div>
+                        <div className='song-duration'>{item.duration}</div>
                         <div className='song-action'>
                           <div className='cursor-pointer like-button'>{item.liked?<IoHeartSharp color="#45b98d" size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>:<IoHeartOutline size='30px' onClick={()=>item.liked?unlikeHandler(item.id):likeHandler(item.id)}/>}</div>
                           <div className='cursor-pointer playlist-button'> <IoAddCircleOutline size="30px" onClick={()=>getDataPlaylist(item.id)}/> </div>
