@@ -26,6 +26,16 @@ export const POST=async(req:NextRequest)=>{
 }   
 
 
+export const DELETE=async(req:NextRequest)=>{
+    const url=new URL(req.url).searchParams
+    const id = url.get('id')
+    const song=await prisma.songs.delete({
+        where:{
+            id:Number(id)
+        }
+    })
+    return NextResponse.json({status:"dlete succes"})
+}
 
 export const GET =async(req:NextRequest)=>{
     const session=await getServerSession(authOptions)

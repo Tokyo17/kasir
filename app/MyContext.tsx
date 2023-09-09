@@ -23,7 +23,7 @@ export type MyContextType = {
   pauseHandler:(message:any)=>void;
   backHandler:(message:any)=>void;
   nextHandler:(message:any)=>void;
-  successUploadMusic:()=>void;
+  toastSucces:()=>void;
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -148,7 +148,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
 
   // ======= FUNCTION HANDLER ===========
-  const successUploadMusic=()=>{
+  const toastSucces=()=>{
     Swal.fire({
       title:'Success!',
       icon:'success',
@@ -169,6 +169,8 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     if(!session&&status == "unauthenticated"){
       if(audio.current){
         audio.current.srcObject=null
+        setMusic(null)
+        setIsPlaying(false)
       }
     }
   },[status])
@@ -190,7 +192,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     pauseHandler,
     nextHandler,
     backHandler,
-    successUploadMusic
+    toastSucces
 
   };
 

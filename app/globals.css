@@ -95,7 +95,6 @@ body{
 }
 .song-action{
   /* border: 1px solid; */
-  width: 65px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -298,8 +297,23 @@ input {
 }
 
 @media screen and (max-width: 730px) {
-  
+  :root{
+    --margin:0px 5px;
+  }
 .title-song{
   font-size: 17px;
 }
+.song-number {
+  width: 30px;
+}
+.song-duration{
+  margin-right: 5px;
+}
+.song-action {
+  
+}
+.login-input{
+  width: 72%;
+}
+
 }

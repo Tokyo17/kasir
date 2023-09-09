@@ -19,9 +19,9 @@ export default function NavTop(){
             title: 'Login!',
             html:
              '<p class="pass-title">Username</p>'+
-              '<input id="swal-input1" class="swal2-input">' +
+              '<input id="swal-input1" class="swal2-input login-input">' +
               '<p class="pass-title">Password</p>'+
-              '<input id="swal-input2" class="swal2-input">',
+              '<input id="swal-input2" class="swal2-input login-input">',
             focusConfirm: false,
             showLoaderOnConfirm: true,
             preConfirm: async() => {

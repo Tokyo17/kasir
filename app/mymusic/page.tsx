@@ -9,11 +9,16 @@ import ListMusic from '../component/listMusic'
 import Swal from 'sweetalert2';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../firebase';
+import { toastLoading } from '../component/loadingPopup';
 
 export default function MyMusic() {
 
   const {data:session}=useSession()
-  const{music,setDataMusic,dataMusic,successUploadMusic}=useMyContext()
+  const{music,setDataMusic,dataMusic,toastSucces}=useMyContext()
+
+
+
+
 
   const getData=async()=>{
 
@@ -46,7 +51,7 @@ body:JSON.stringify({
 }).then(res=>{
 if(res.ok){
     getData()
-    successUploadMusic()
+    toastSucces()
 }else{
     Swal.fire({
         title:'Error!s',
@@ -80,8 +85,7 @@ console.log(err)
             if(file){
 
                 reader.onload = () => {
-                    const audioUrl = reader.result as string || '';
-                    
+                    const audioUrl = reader.result as string || '';   
                    const  audio = new Audio(audioUrl);
                     audio.addEventListener('loadedmetadata', () => {
                         const time =Math.floor(audio?.duration)
@@ -93,34 +97,12 @@ console.log(err)
                     const storageRef=ref(storage,`music/${file?.name}`)
                     const uploadTask=uploadBytesResumable(storageRef,file)
 
-                return  uploadTask.on("state_changed",
+                    toastLoading('Uploading Music...')
+
+                      uploadTask.on("state_changed",
                      (snapshot)=>{
                         const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                        console.log(progress)
-                        Swal.fire({
-                            title: `Uploading music ${progress}%`,
-                            didOpen:()=>{
-                                Swal.showLoading()
-                            },
-                            
-                            toast:true,
-                            heightAuto:false,
-                            // showClass:{
-                            //     popup: '',
-                            //     backdrop: '',
-                            //     icon: ''
-                            // },
-                            // hideClass:{
-                            //     popup: '',
-                            //     backdrop: '',
-                            //     icon: ''
-                            // },
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            allowEnterKey: false          
-                        })
+
     
                     },(err:any)=>{
                         Swal.showValidationMessage(
@@ -159,7 +141,7 @@ console.log(err)
         <div onClick={popUpUpload} className="add-playlist">
             <IoAdd color="#45b98d" size="30px"/>Upload Music
         </div>
-            <ListMusic dataMusic={dataMusic} getData={getData}/>
+            <ListMusic delButton={true} dataMusic={dataMusic} getData={getData}/>
     </div>
 
   )
