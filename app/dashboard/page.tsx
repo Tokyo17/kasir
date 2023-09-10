@@ -219,25 +219,25 @@ export default function Dashboard(){
 
 
     return(
-        <div className="content">
+        <div >
         <div onClick={addPlaylist} className="add-playlist">
             <IoAdd color="#45b98d" size="30px"/>Add playlist
         </div>
+        <div className="content">
+            {playlists?.playlists?.map((item:{id:number,name:string},index:number)=>{
+                return <div key={index} className='list-playlist'>
+                        <div className='playlist-number'>{index+1}</div>
+                        <div className="playlist-title">
+                        <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
+                        </div>
+                        <div className='playlist-action'>
+                            <AiOutlineDelete color="#45b98d" size="25px" onClick={()=>{deletePlaylist(item.id)}}/>
+                            <AiOutlineEdit size="25px" onClick={()=>{renamePlaylist(item.id,item.name)}}/>
+                        </div>
+                </div>
 
-        {playlists?.playlists?.map((item:{id:number,name:string},index:number)=>{
-             return <div key={index} className='list-playlist'>
-                    <div className='playlist-number'>{index+1}</div>
-                    <div className="playlist-title">
-                       <p   onClick={()=>{updateHandler(item.id)}}>{item.name}</p>
-                    </div>
-                     <div className='playlist-action'>
-                        <AiOutlineDelete color="#45b98d" size="25px" onClick={()=>{deletePlaylist(item.id)}}/>
-                        <AiOutlineEdit size="25px" onClick={()=>{renamePlaylist(item.id,item.name)}}/>
-                    </div>
-             </div>
-
-        })}
-        
+            })}
+        </div>
         </div>
         
     )

@@ -272,7 +272,7 @@ const deletHandle=(id:number,title:string)=>{
                         {/* <div className='song-number'>{index+1}</div> */}
                         <div className='cursor-pointer play-icon'>{playOrPauseHandler(item)}</div>
                        <p className='title-song' >
-                            {item.title}
+                            {item.title.replace(/.mp3/gi,'')}
                         </p>
                         <div className='song-duration'>{item.duration}</div>
                         <div style={{width:delButton?"80px":"60px"}} className='song-action'>

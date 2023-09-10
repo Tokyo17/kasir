@@ -24,6 +24,10 @@ export type MyContextType = {
   backHandler:(message:any)=>void;
   nextHandler:(message:any)=>void;
   toastSucces:()=>void;
+  loop:string;
+  setLoop:(message:any)=>void;
+  mute:boolean;
+  setMute:(message:boolean)=>void;
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -49,20 +53,57 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const [music, setMusic] =useState<any>('');
   const [isPlaying, setIsPlaying] =useState(false);
   const [playlists, setPlaylists] =useState<any>(null);
+  const [loop, setLoop] =useState<string>('loop');
+  const [mute, setMute] =useState<boolean>(false);
+  const [ended, setEnded] =useState<boolean>(false);
 
   const {data:session,status}=useSession()
 
   const audio = useRef(typeof Audio !== "undefined" ? new Audio("") : undefined);
 
+useEffect(()=>{
+if(ended){
+     // setIsPlaying(false)
+     console.log(music?.index,dataQueueMusic?.songs.length-1)
+     console.log("loop : ",loop==='loop',loop)
+     console.log("no loop : ",loop==='no-loop',loop)
+     if(loop==='loop'){
+       if(music?.index==dataQueueMusic?.songs.length-1){
+         console.log("ulang")
+         setMusic(dataQueueMusic?.songs[0])
+       }else{
+         nextHandler()
+       }
+     }else if(loop==='loop-one'){
+       playHandler()
+     }else if(loop==='no-loop'){
+       if(music?.index==dataQueueMusic?.songs.length-1){
+         setIsPlaying(false)
+       }else{
+         nextHandler()
+       }
+     }
+     setEnded(false)
+     console.log("ended : ",ended)
+}
+},[ended])
 
   audio.current?.addEventListener("ended", function(){
-    setIsPlaying(false)
+    setEnded(true)
   });
 
   const playHandler=()=>{
     if(music){
     audio?.current?.play()
     setIsPlaying(true)}
+  }
+
+  const stopHandler=()=>{
+    if(audio.current){
+      audio.current.srcObject=null
+      setMusic(null)
+      setIsPlaying(false)
+    }
   }
   const pauseHandler=()=>{
     if(music){
@@ -83,8 +124,15 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   }
   const [oldMusic,setOldMusic]=useState<any>(null)
 
-  useEffect(()=>{
 
+  useEffect(()=>{
+    if(audio.current){
+      audio.current.muted=mute;
+    }
+  },[mute])
+
+  useEffect(()=>{
+    console.log(music?.index,dataQueueMusic?.songs.length)
     console.log(music?.id,music?.index,oldMusic?.id,oldMusic?.index)
     if(music?.id!=oldMusic?.id){
       audio.current?.pause()
@@ -167,11 +215,7 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
 
   useEffect(()=>{
     if(!session&&status == "unauthenticated"){
-      if(audio.current){
-        audio.current.srcObject=null
-        setMusic(null)
-        setIsPlaying(false)
-      }
+        stopHandler()
     }
   },[status])
 
@@ -192,7 +236,11 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     pauseHandler,
     nextHandler,
     backHandler,
-    toastSucces
+    toastSucces,
+    loop,
+    setLoop,
+    setMute,
+    mute
 
   };
 

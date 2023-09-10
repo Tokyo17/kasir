@@ -45,7 +45,8 @@ export const GET =async(req:NextRequest)=>{
         },
         include:{
             likeds:true
-        }
+        },
+        orderBy:{id:"desc"}
 
     })
     const songs =result.map((song:{id:number,duration:string,title:string,url:string,likeds:{userId: number,songId: number}[]}) => (
