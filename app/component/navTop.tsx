@@ -1,5 +1,7 @@
 "use client"
 import { PiGuitarFill } from "react-icons/pi";
+
+import { GiMusicalNotes } from "react-icons/gi";
 import { IoMdLogOut } from "react-icons/io";
 import { IoLibraryOutline ,IoMenuSharp} from "react-icons/io5";
 import Link from "next/link";
@@ -7,6 +9,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
+import { AiFillHome,AiOutlineLogout } from "react-icons/ai";
+import { MdPlaylistAdd } from "react-icons/md";
+import { BsFileMusic } from "react-icons/bs";
+import { IoHeartOutline,IoHeartSharp } from 'react-icons/io5';
 
 export default function NavTop(){
     const [isShow,setIsShow]=useState(false)
@@ -81,7 +87,7 @@ export default function NavTop(){
 
     return <div className='nav-top'>
         <div className="nav-icon">
-          <PiGuitarFill onClick={()=>route.push("/")} size="35px"/>
+          <GiMusicalNotes onClick={()=>route.push("/")} size="35px"/>
           Senandung
         </div>
 
@@ -92,18 +98,18 @@ export default function NavTop(){
             <IoMenuSharp onClick={()=>setIsShow(!isShow)} size="35px"/>
         </div>
 
-        <div className="side-nav" style={isShow?{}:{transform:"translate(400px, -107px)"}}>
+        <div className="side-nav" style={isShow?{}:{transform:"translate(400px, -125px)"}}>
         <div className="nav-link" onClick={()=>{
                           setIsShow(false)
-                        route.push("/")}}>HOME</div>
-            <div className="nav-link" onClick={()=>{navLink("/mymusic")}}>MY SONG</div>
-            <div className="nav-link" onClick={()=>{navLink("/like")}}>LOVED SONG</div>
-            <div className="nav-link" onClick={()=>{navLink("/dashboard")}}>PLYALIST</div>
+                        route.push("/")}}><AiFillHome size="25px"/></div>
+            <div className="nav-link" onClick={()=>{navLink("/mymusic")}}><BsFileMusic size="25px"/></div>
+            <div className="nav-link" onClick={()=>{navLink("/like")}}><IoHeartOutline size="25px"/></div>
+            <div className="nav-link" onClick={()=>{navLink("/dashboard")}}><MdPlaylistAdd size="25px"/></div>
             {
                 session?    <div className="sign">
                                  <div className="signout"  onClick={()=>{
                                     setIsShow(false)
-                                    signOut({redirect:false})}}>SIGNOUT</div>
+                                    signOut({redirect:false})}}><AiOutlineLogout size="25px"/></div>
                             </div>
                 :
                 <div className="sign">

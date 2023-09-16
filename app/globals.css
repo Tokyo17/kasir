@@ -23,8 +23,9 @@ html{
   height: 100%;
 }
 body{
-  background-color: black;
-  color: white;
+  /* background-color: #F8F9FE; */
+  background-color: white;
+  color: black;
   overflow: hidden;
   position: relative;
   height: 100%;
@@ -32,16 +33,32 @@ body{
 .content{
   overflow-y: scroll;
   height: calc(100% - 170px);
-  margin: var(--margin);
+  padding: var(--margin);
 }
 
+.bg img{
+    width: 230px;
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+}
+.bg img:nth-child(1){
+  transform: translate(0px, -77px);
 
+}
+.bg img:nth-child(2){
+  transform: translate(0px, -54px);
+  right: 0;
+}
  
 .content::-webkit-scrollbar {
   width: 10px;
+  display: none;
+
 }
 .content::-webkit-scrollbar-track{
   background-color: rgb(68, 68, 68);
+
 }
 /* Handle */
 .content::-webkit-scrollbar-thumb {
@@ -56,7 +73,10 @@ body{
   display: flex;
   justify-content: space-between;
   height: 65px;
-  margin-right: 10px;
+  padding: 0px 10px;
+  background-color: white;
+  margin-top: 10px;
+  box-shadow: 0px 2px 11px rgb(0 0 0 / 10%);
 }
 .song-number{
   width: 40px;
@@ -115,15 +135,19 @@ input {
 
 /* ======== PLAYLIST =========== */
 .add-playlist{
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
-  border: 1px solid;
   justify-content: center;
   align-items: center;
   height: 46px;
   width: 160px;
-  margin: auto;
   cursor: pointer;
   font-weight: 600;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgb(0 0 0 / 20%);
+  border-radius: 5px;
 }
 .list-playlist{
   display: flex;
@@ -194,7 +218,8 @@ input {
   bottom: 0;
   width: 100%;
   height: 110px;
-  background-color: black;
+  background-color: white;
+  box-shadow: 1px 51px 50px;
  }
 .nav-bottom-title{
   /* border: 1px solid; */
@@ -232,7 +257,7 @@ input {
   font-size: 11px;
   font-weight: bolder;
   color: #45b98d;
-  background: black;
+  background: white;
   width: 9px;
 }
  .music-control{
@@ -260,12 +285,16 @@ input {
   margin: var(--margin);
   /* border: 1px solid; */
   height: 60px;
+  background-color: white;
+  padding: 0px 10px;
+  box-shadow: 0px 2px 5px rgb(0 0 0 / 20%);
 }
 .nav-icon{
   align-items: center;
   display: flex;
   font-weight: 900;
   font-size: 23px;
+  color: rgb(71, 71, 71);
 }
 .nav-action-icon{
   display: flex;
@@ -274,12 +303,12 @@ input {
 .side-nav{
   position: absolute;
   /* border: 2px solid white; */
-  background: rgb(32, 32, 32);
-  height: calc(100% - 165px);
+  background: white;
+  height: calc(100% - 200px);
   /* z-index: 99; */
   width: 320px;
   margin-top: 397px;
-  transform: translate(0px, -107px);
+  transform: translate(230px, -125px);
   right: 0px;
   bottom: 0;
   transition: .3s ease-in-out;
@@ -288,6 +317,7 @@ input {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    box-shadow: 0px 2px 5px rgb(0 0 0 / 20%);
 }
 .nav-link{
   cursor: pointer;
@@ -303,10 +333,10 @@ input {
   margin: 0px 10px;
 }
 .signout{
-  cursor: pointer;
+  /* cursor: pointer;
   border: 1px solid;
   background-color: rgb(214, 70, 70);
-  padding: 10px;
+  padding: 10px; */
   /* border-radius: 5px; */
 }
 .signin{
@@ -336,7 +366,7 @@ input {
     --margin:0px 5px;
   }
 .title-song{
-  font-size: 17px;
+  font-size: 15px;
 }
 .song-number {
   width: 30px;
