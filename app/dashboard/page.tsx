@@ -9,6 +9,7 @@ import Link from "next/link"
 import Swal from "sweetalert2"
 import { AiOutlineDelete,AiOutlineEdit } from "react-icons/ai";
 import { IoAdd } from "react-icons/io5";
+import Loading from "../component/loading"
 
 
 export default function Dashboard(){
@@ -18,7 +19,7 @@ export default function Dashboard(){
     const route=useRouter()
     const {data:session,status}=useSession()
     const{playlists,setPlaylists}=useMyContext()
-    const[name,setName]=useState('')
+    const[isLoading,setIsloading]=useState(false)
 
 
     useEffect(()=>{
@@ -33,6 +34,7 @@ export default function Dashboard(){
       }
 
     const getData=async()=>{
+        setIsloading(true)
        const data= await fetch("/api/playlist")
        const json=await data.json()
     //     const newJson = json?.data?.map((item: { index:number,img_name: string, url: string },index:number) => ({
@@ -40,6 +42,7 @@ export default function Dashboard(){
     //     name: item.img_name,
     //     url: item.url
     //   }));
+    setIsloading(false)
       console.log(json)
       setPlaylists(json)
     }
@@ -53,6 +56,7 @@ export default function Dashboard(){
           input: 'text',
           inputValue: inputValue,
           showCancelButton: true,
+          heightAuto:false,
           inputValidator: (value) => {
             if (!value) {
               return 'You need to write something!'
@@ -68,6 +72,7 @@ export default function Dashboard(){
                     didOpen:()=>{
                         Swal.showLoading()
                     },
+                    heightAuto:false,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false  
@@ -94,6 +99,7 @@ export default function Dashboard(){
                     Swal.fire({
                         title:'Success!',
                         icon:'success',
+                        heightAuto:false,
                         timer: 1000,
                         showConfirmButton:false
                       })
@@ -101,6 +107,7 @@ export default function Dashboard(){
                     Swal.fire({
                         title:'Error!',
                         icon:'error',
+                        heightAuto:false,
                         timer: 1000,
                         showConfirmButton:false
                       })
@@ -113,7 +120,18 @@ export default function Dashboard(){
 
 
     const deletePlaylist=async(id:number)=>{
-        Swal.showLoading()
+        Swal.fire({
+            html: 'please waiting for a seconds.',
+            didOpen:()=>{
+                Swal.showLoading()
+            },
+            heightAuto:false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false  
+
+            
+        })
             await fetch(`/api/playlist?id=${id}`,{
                 method:"DELETE",
                 headers:{
@@ -126,6 +144,7 @@ export default function Dashboard(){
                         title:'Success!',
                         icon:'success',
                         timer: 1000,
+                        heightAuto:false,
                         showConfirmButton:false
                       })
                 }else{
@@ -133,6 +152,7 @@ export default function Dashboard(){
                         title:'Error!',
                         icon:'error',
                         timer: 1000,
+                        heightAuto:false,
                         showConfirmButton:false
                       })
                 }
@@ -160,6 +180,7 @@ export default function Dashboard(){
                     Swal.fire({
                         title:'Success!',
                         icon:'success',
+                        heightAuto:false,
                         timer: 1000,
                         showConfirmButton:false
                       })
@@ -167,6 +188,7 @@ export default function Dashboard(){
                     Swal.fire({
                         title:'Error!',
                         icon:'error',
+                        heightAuto:false,
                         timer: 1000,
                         showConfirmButton:false
                       })
@@ -185,6 +207,7 @@ export default function Dashboard(){
           title: 'Enter your new name playlist',
           input: 'text',
           inputValue: inputValue,
+          heightAuto:false,
           showCancelButton: true,
           inputValidator: (value) => {
             if (!value) {
@@ -201,6 +224,7 @@ export default function Dashboard(){
                     didOpen:()=>{
                         Swal.showLoading()
                     },
+                    heightAuto:false,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false  
@@ -217,9 +241,14 @@ export default function Dashboard(){
     },[])
  
 
+    
+  useEffect(()=>{
+    if(!session){
+    route.push('/')}
+  },[session])
 
     return(
-        <div >
+        <div style={{height:"100%"}} >
         <div onClick={addPlaylist} className="add-playlist">
             <IoAdd color="#45b98d" size="30px"/>Add playlist
         </div>
@@ -237,6 +266,10 @@ export default function Dashboard(){
                 </div>
 
             })}
+            {
+                (isLoading||!playlists?.playlists)&&
+                <Loading/>
+            }
         </div>
         </div>
         

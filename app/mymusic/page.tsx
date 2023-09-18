@@ -10,22 +10,25 @@ import Swal from 'sweetalert2';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../firebase';
 import { toastLoading } from '../component/loadingPopup';
+import { truncate } from 'fs/promises';
+import { useRouter } from 'next/navigation';
 
 export default function MyMusic() {
 
   const {data:session}=useSession()
   const{music,setDataMusic,dataMusic,toastSucces}=useMyContext()
-
+const [isLoading,setIsLoading]=useState(false)
 
 
 
 
   const getData=async()=>{
-
+    setIsLoading(true)
     const data= await fetch("/api/songs")
     const json=await data?.json()
 
     // console.log(outputJSON)
+    setIsLoading(false)
     console.log(json)
     setDataMusic(json)
  }
@@ -57,6 +60,7 @@ if(res.ok){
         title:'Error!s',
         icon:'error',
         timer: 1000,
+        heightAuto:false,
         showConfirmButton:false
       })
 }
@@ -71,10 +75,9 @@ console.log(err)
     const { value: formValues } = await Swal.fire({
         title: 'Multiple inputs',
         html:
-          '<input type="file" accept=".mp3" id="swal-inputImage" class="swal-input-image">'+
-          '<p class="upload-title">Title Of Song</p>'+
-          '<input id="swal-inputTitle" placeholder="input your music title" class="swal2-input">',
+          '<input type="file" accept=".mp3" id="swal-inputImage" class="swal-input-image">',
         focusConfirm: false,
+        heightAuto:false,
         showLoaderOnConfirm: true,
         preConfirm: async() => {
             const inputElement = document.getElementById('swal-inputImage') as HTMLInputElement;
@@ -135,13 +138,19 @@ console.log(err)
       })
 
   }
+  const route=useRouter()
+
+  useEffect(()=>{
+    if(!session){
+    route.push('/')}
+  },[session])
 
   return (
     <div style={{height:"100%"}}>
         <div onClick={popUpUpload} className="add-playlist">
             <IoAdd color="#45b98d" size="30px"/>Upload Music
         </div>
-            <ListMusic delButton={true} dataMusic={dataMusic} getData={getData}/>
+            <ListMusic isLoading={isLoading} delButton={true} dataMusic={dataMusic} getData={getData}/>
     </div>
 
   )

@@ -12,8 +12,10 @@ import { AiOutlineDelete,AiOutlineEdit } from "react-icons/ai";
 import { deleteObject, ref } from 'firebase/storage'
 import { storage } from '../firebase'
 import { toastLoading } from './loadingPopup'
+import Loading from './loading'
 
-export default function ListMusic({dataMusic,getData,delButton}:any) {
+
+export default function ListMusic({full,isLoading,dataMusic,getData,delButton}:any) {
 
 
   const{music,setMusic,isPlaying,setDataQueueMusic,playHandler,pauseHandler,toastSucces}=useMyContext()
@@ -265,7 +267,7 @@ const deletHandle=(id:number,title:string)=>{
 }
 
   return (
-    <div className='content'>
+    <div className='content' style={{height:full&&"calc(100% - 180px)"}}>
         {dataMusic?.songs?.map((item:{id:number,duration:string,index:number,url:string,title:string,liked:boolean},index:number)=>{
             item.index=index
             return <div  className='list-song' key={index}>
@@ -283,6 +285,10 @@ const deletHandle=(id:number,title:string)=>{
                   </div>
         })}
 
+        {
+        (isLoading||!dataMusic?.songs)&&
+          <Loading/>
+        }
        
     </div>
   )

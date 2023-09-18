@@ -1,13 +1,17 @@
 'use client'
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
+import ListMusic from "@/app/component/listMusic"
+import { useSession } from "next-auth/react"
 
 export default function Update({params}:{params:{id:string}}){
 
-    const [song,setSong]=useState<any>(null)
+    const [songs,setSongs]=useState<any>(null)
+    const [isLoading,setIsloading]=useState(false)
 
     const id=params.id
     const getData=async()=>{
+        setIsloading(true)
         const data= await fetch(`/api/playlist/${id}`)
         const json=await data.json()
      //     const newJson = json?.data?.map((item: { index:number,img_name: string, url: string },index:number) => ({
@@ -15,7 +19,8 @@ export default function Update({params}:{params:{id:string}}){
      //     name: item.img_name,
      //     url: item.url
      //   }));
-     setSong(json)
+     setIsloading(false)
+     setSongs(json)
        console.log(json)
      }
  
@@ -27,18 +32,27 @@ export default function Update({params}:{params:{id:string}}){
          getData()
      },[])
   
-    return(
-        <div>
-            <p>Song:</p>
-            {id}
 
-            {
-                song?.map((item:{id:number,title:string},index:number)=>{
-                return  <p key={index}>
-                            {item.title}
-                        </p>
-                })
-            }
-        </div>
+
+const {data:session}=useSession()
+  useEffect(()=>{
+    console.log(session)
+    if(!session){
+    route.push('/')}
+  },[session])
+    return(
+        <ListMusic isLoading={isLoading} getData={getData} dataMusic={songs} />
+        // <div>
+        //     <p>Song:</p>
+        //     {id}
+
+        //     {
+        //         song?.map((item:{id:number,title:string},index:number)=>{
+        //         return  <p key={index}>
+        //                     {item.title}
+        //                 </p>
+        //         })
+        //     }
+        // </div>
     )
 }

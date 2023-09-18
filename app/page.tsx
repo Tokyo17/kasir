@@ -10,16 +10,22 @@ export default function Home() {
 
   const {data:session}=useSession()
   const{music,setDataMusic,dataMusic,isPlaying}=useMyContext()
+  const[isLoading,setIsLoading]=useState(false)
 
   const getData=async()=>{
-
+    setIsLoading(true)
     const data= await fetch("/api")
     const json=await data?.json()
 
     // console.log(outputJSON)
-    console.log(json)
+    setIsLoading(false)
+    console.log(data)
     setDataMusic(json)
+
  }
+ useEffect(()=>{
+  console.log(isLoading)
+ },[isLoading])
 
   useEffect(()=>{
     getData()
@@ -27,6 +33,6 @@ export default function Home() {
   },[session])
 
   return (
-    <ListMusic dataMusic={dataMusic} getData={getData}/>
+    <ListMusic full={true} isLoading={isLoading} dataMusic={dataMusic} getData={getData}/>
   )
 }
