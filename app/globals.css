@@ -339,6 +339,22 @@ input {
 }
 .nav-link{
   cursor: pointer;
+  border-radius: 5px;
+    align-items: center;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    height: 35px;
+}
+.nav-link:hover{
+  background-color: #8fd1b8;
+  /* #45b98d; */
+  color: white;
+}
+
+.nav-active{
+  background-color: #45b98d;
+  color: white;
 }
 
 .sign{

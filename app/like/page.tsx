@@ -32,6 +32,6 @@ const {data:session}=useSession()
   },[session])
 
     return(
-        <ListMusic isLoading={isLoading} getData={getData} dataMusic={dataMusicLiked} />
+        <ListMusic full={true} isLoading={isLoading} getData={getData} dataMusic={dataMusicLiked} />
     )
 }

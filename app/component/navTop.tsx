@@ -5,7 +5,7 @@ import { GiMusicalNotes } from "react-icons/gi";
 import { IoMdLogOut } from "react-icons/io";
 import { IoLibraryOutline ,IoMenuSharp} from "react-icons/io5";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter,usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
@@ -84,7 +84,10 @@ export default function NavTop(){
         })
       }
     }
-
+    const path=usePathname()
+    useEffect(()=>{
+      console.log(path)
+    },[path])
 
     return <div className='nav-top'>
         <div className="nav-icon">
@@ -100,12 +103,12 @@ export default function NavTop(){
         </div>
 
         <div className="side-nav" style={isShow?{}:{transform:"translate(400px, -125px)"}}>
-        <div className="nav-link" onClick={()=>{
+        <div className={path=="/"?"nav-link nav-active":"nav-link"} onClick={()=>{
                           setIsShow(false)
                         route.push("/")}}><AiFillHome size="25px"/></div>
-            <div className="nav-link" onClick={()=>{navLink("/mymusic")}}><BsFileMusic size="25px"/></div>
-            <div className="nav-link" onClick={()=>{navLink("/like")}}><IoHeartOutline size="25px"/></div>
-            <div className="nav-link" onClick={()=>{navLink("/dashboard")}}><MdPlaylistAdd size="25px"/></div>
+            <div className={path=="/mymusic"?"nav-link nav-active":"nav-link"} onClick={()=>{navLink("/mymusic")}}><BsFileMusic size="25px"/></div>
+            <div className={path=="/like"?"nav-link nav-active":"nav-link"} onClick={()=>{navLink("/like")}}><IoHeartOutline size="25px"/></div>
+            <div className={path=="/playlist"?"nav-link nav-active":"nav-link"} onClick={()=>{navLink("/playlist")}}><MdPlaylistAdd size="25px"/></div>
             {
                 session?    
                                  <div className="signout"  onClick={()=>{
