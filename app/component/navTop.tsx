@@ -108,7 +108,7 @@ export default function NavTop(){
                         route.push("/")}}><AiFillHome size="25px"/></div>
             <div className={path=="/mymusic"?"nav-link nav-active":"nav-link"} onClick={()=>{navLink("/mymusic")}}><BsFileMusic size="25px"/></div>
             <div className={path=="/like"?"nav-link nav-active":"nav-link"} onClick={()=>{navLink("/like")}}><IoHeartOutline size="25px"/></div>
-            <div className={path=="/playlist"?"nav-link nav-active":"nav-link"} onClick={()=>{navLink("/playlist")}}><MdPlaylistAdd size="25px"/></div>
+            <div className={path=="/playlists"?"nav-link nav-active":"nav-link"} onClick={()=>{navLink("/playlists")}}><MdPlaylistAdd size="25px"/></div>
             {
                 session?    
                                  <div className="signout"  onClick={()=>{
